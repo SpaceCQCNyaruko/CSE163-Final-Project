@@ -25,7 +25,7 @@ CSE 163, Autumn 2026
 4. **Two ledgers.** For Afghan and Iraqi arrivals to Washington, what share appears only
    in the Special Immigrant Visa (SIV) report rather than the refugee arrivals report?
    How did that share change around the 2021 evacuation (FY2021–FY2022) compared with
-   FY2015–FY2019?
+   FY2015–FY2019? The SIV report ends at FY2025, so the comparison covers FY2015–FY2025.
 
 ---
 
@@ -103,15 +103,20 @@ explicit year-to-filename map rather than a generated pattern. FY2026 is also pu
 the Admissions & Arrivals page as `Refugee Arrivals by State and Nationality as of
 September 30, 2026.pdf`; we check that the two files agree.
 
-**B. SIV Arrivals by Nationality and State, FY2015–FY2026.** PDFs from the same base URL.
-FY2015–FY2025 are the combined "Amerasian & SIV" reports. FY2026 is split into two
-separate files on the Admissions & Arrivals page (https://www.rpc.state.gov/admissions-and-arrivals/):
-an Amerasian report and a SIV report. Because the report boundaries and the file naming
-change in FY2026, that year is a seam we check explicitly.
+**B. SIV Arrivals by Nationality and State, FY2015–FY2025.** PDFs from the same base URL.
+Every file in this series is the combined "Amerasian & SIV" report, so a count read from it
+combines two administrative categories. For Afghanistan and Iraq we check each year for
+Amerasian arrivals and report the result, so a reader can see whether that combination
+matters for the two nationalities we analyze. **No FY2026 file exists.** The archive index
+stops at FY2025, and the Admissions & Arrivals page
+(https://www.rpc.state.gov/admissions-and-arrivals/) now carries the FY2027 reports (as of
+October 31, 2026). We therefore treat FY2025 as the last complete year of the SIV series.
+This is a boundary of the published record, not a gap in our collection: we state it next
+to every SIV share, and we report no SIV share for FY2026, a year for which refugee
+arrivals exist but no SIV report does.
 
 | FY | File name (append to the base URL) |
 |---|---|
-| 2026 | `SIV Arrivals by Nationality and State as of September 30, 2026.pdf` (Admissions & Arrivals page) |
 | 2025 | `FY 2025 Amerasian & SIV Arrivals by Nationality and State.pdf` |
 | 2024 | `FY 2024 Amerasian & SIV Arrivals by Nationality and State_updated_2025_01_14.pdf` |
 | 2023 | `FY 2023 Amerasian & SIV Arrivals by Nationality and State.pdf` |
@@ -320,14 +325,17 @@ table of the counties where the absorbing categories are largest. If the range c
 
 ### RQ4: Two ledgers
 1. Sum A to `(state, nationality, fiscal_year, count_refugee)` and B to
-   `(state, nationality, fiscal_year, count_siv)`.
+   `(state, nationality, fiscal_year, count_siv)`, keeping only the fiscal years both
+   reports cover (FY2015–FY2025).
 2. Merge them on `state` + `nationality` + `fiscal_year` with an **outer join** and
    `indicator=True`. An inner join would drop exactly the rows that appear in only one
    report.
 3. For Afghanistan and Iraq in Washington, compute
    `missed_by_refugee_report = count_siv / (count_refugee + count_siv)` for each year.
-4. Compare FY2021–FY2022 with FY2015–FY2019, and report FY2023–FY2026 alongside. From B05006, report the Washington
-   counties with the largest Afghan-born and Iraqi-born populations, as background only.
+4. Compare FY2021–FY2022 with FY2015–FY2019, and report FY2023–FY2025 alongside. FY2026
+   is excluded because no SIV report was published for it, so there is no denominator for
+   that year. From B05006, report the Washington counties with the largest Afghan-born and
+   Iraqi-born populations, as background only.
 
 **Leads to a conclusion:** A clear rise in the SIV share in FY2021–FY2022 means that,
 for Afghans, the refugee report alone increasingly undercounts the arrivals that were
