@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.libs/
+.tmp/
+.dsh-office-*/

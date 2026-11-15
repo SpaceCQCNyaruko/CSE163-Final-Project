@@ -1,0 +1,18 @@
+nationality,language,acs_category,tier,source
+Afghanistan,Dari,Persian (incl. Farsi Dari),own,Census B16001 label
+Afghanistan,Pashto,Other Indo-European languages,residual,Census language code list
+Iraq,Arabic,Arabic,own,Census B16001 label
+Syria,Arabic,Arabic,own,Census B16001 label
+Sudan,Arabic,Arabic,own,Census B16001 label
+Somalia,Somali,Amharic Somali or other Afro-Asiatic languages,shared,Census B16001 label
+Ethiopia,Amharic,Amharic Somali or other Afro-Asiatic languages,shared,Census B16001 label
+Eritrea,Tigrinya,Other and unspecified languages,residual,Census language code list
+Burma,Burmese,Other and unspecified languages,residual,Census language code list
+Ukraine,Ukrainian,Ukrainian or other Slavic languages,shared,Census B16001 label
+Russia,Russian,Russian,own,Census B16001 label
+Iran,Persian,Persian (incl. Farsi Dari),own,Census B16001 label
+Venezuela,Spanish,Spanish,own,Census B16001 label
+Dem. Rep. Congo,French,French (incl. Cajun),shared,Census B16001 label
+Moldova,Romanian,Other Indo-European languages,residual,Census language code list
+Bhutan,Dzongkha,Other and unspecified languages,residual,Census language code list
+Republic of South Sudan,Arabic,Arabic,own,Census B16001 label
