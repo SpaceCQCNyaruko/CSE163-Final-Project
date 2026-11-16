@@ -31,7 +31,7 @@ def style_document(document):
     normal = document.styles["Normal"]
     normal.font.name = "Calibri"
     normal.font.size = BODY_SIZE
-    normal.paragraph_format.line_spacing = 1.15
+    normal.paragraph_format.line_spacing = 1.10
     normal.paragraph_format.space_after = Pt(3)
     for name in ("Heading 1", "Heading 2", "Title"):
         style = document.styles[name]
@@ -89,7 +89,7 @@ def figure(document, name, caption):
     """Insert a figure with its numbered caption."""
     paragraph(document, "").paragraph_format.space_after = Pt(0)
     run = document.paragraphs[-1].add_run()
-    run.add_picture(os.path.join(FIGURES, name), width=Inches(4.4))
+    run.add_picture(os.path.join(FIGURES, name), width=Inches(4.0))
     document.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
     note = document.add_paragraph()
     note.alignment = WD_ALIGN_PARAGRAPH.LEFT
@@ -139,6 +139,8 @@ def main():
     """Assemble the report."""
     county = pd.read_csv(os.path.join(OUTPUTS, "county_residual.csv"))
     top = pd.read_csv(os.path.join(OUTPUTS, "wa_top5.csv"))
+    settings = pd.read_csv(os.path.join(OUTPUTS, "rq1_settings.csv"))
+    bounds = pd.read_csv(os.path.join(OUTPUTS, "language_bounds.csv"))
 
     document = Document()
     style_document(document)
@@ -207,16 +209,16 @@ def main():
     )
     paragraph(
         document,
-        "The deeper problem is that arrivals are recorded by legal status "
-        "rather than by who people are. Refugee, SIV holder, asylee and "
-        "humanitarian parolee are administrative categories, and each "
-        "determines which report a person appears in. Afghan arrivals are "
-        "split across two separately published tables, so \u201chow many "
-        "Afghans arrived in Washington\u201d has two correct answers "
-        "depending on which file is opened. Our EDA measures how much those "
-        "administrative choices change the answer, and it documents a third "
-        "layer we did not expect: parts of the published record cannot be "
-        "read by a program at all.",
+        "The deeper problem is that arrivals are recorded by legal status, "
+        "not by who people are. Refugee, SIV holder, asylee and humanitarian "
+        "parolee are administrative categories, and each decides which report "
+        "a person appears in. Afghan arrivals are split across two separately "
+        "published tables, so \u201chow many Afghans arrived in "
+        "Washington\u201d has two correct answers depending on the file. Our "
+        "EDA measures how "
+        "much those choices change the answer, and documents a third layer we "
+        "did not expect: parts of the record cannot be read by a program at "
+        "all.",
     )
 
     heading(document, "3. Dataset")
@@ -284,29 +286,29 @@ def main():
     paragraph(
         document,
         "Three checks guard the parse. First, every row's twelve monthly "
-        "values are compared with its Grand Total; between 93% and 100% of "
-        "rows close exactly, and the residue is the rows a page repeats "
-        "across a break. Second, the parsed national total is compared with "
-        "the total printed in the file, and validate_total() raises when the "
-        "two differ by more than 2% \u2014 every year the analysis "
-        "uses passes, "
-        "and the two that do not are named in 5.2. Third, where source D is "
-        "available, national monthly totals must agree with it. Rows are "
-        "never dropped to make a check pass: with merged cells a failing row "
-        "is usually the label row for a whole block of nationalities. "
-        "Repeated layers are removed by de-duplicating on state and "
-        "nationality, and a printed total row is kept aside for the "
-        "reconciliation table rather than added to the data.",
+        "values are compared with its Grand Total; 96% to 100% of rows close "
+        "exactly, and the residue is the rows a page repeats across a break. "
+        "Second, the parsed national total is compared with the total printed "
+        "in the file, and validate_total() raises when the two differ by "
+        "more than 2% \u2014 every year the analysis uses passes, and the two "
+        "that do not are named in 5.2. Third, where the file prints a state "
+        "total (FY2021 and FY2023), Washington's parsed rows must equal it. "
+        "Rows are never dropped to make a check pass: with merged cells a "
+        "failing row is usually the label row for a whole block of "
+        "nationalities. Repeated layers are removed by de-duplicating on "
+        "state and nationality, and a printed total row is kept aside for "
+        "the reconciliation table rather than added to the data.",
     )
     paragraph(
         document,
         "The language analysis needs a crosswalk from nationality to "
         "language to Census category. It lives in data/crosswalk.csv, one row "
-        "per nationality with the language, the exact ACS category label and "
-        "a tier: own category, shared category, or residual. Code loads the "
-        "file and matches each label against the fetched ACS columns, so a "
-        "renamed category fails loudly instead of silently producing a wrong "
-        "count. Every table and figure in this report is regenerated by "
+        "per language with its role (main or other), the exact ACS category "
+        "label and a tier: own category, shared category, or residual. Code "
+        "loads the file and matches each label against the fetched ACS "
+        "columns, so a renamed category fails loudly instead of silently "
+        "producing a wrong count. Every table and figure in this report is "
+        "regenerated by "
         "python src/main.py from the raw files.",
     )
 
@@ -332,8 +334,8 @@ def main():
         "random. The PDFs print only rows with at least one arrival, so a "
         "missing (state, nationality) pair means zero arrivals, not an "
         "unknown value; we know this because every parsed year reproduces the "
-        "national total printed in the file to within 2%, and because between "
-        "93% and 100% of rows close exactly against their own Grand Total. "
+        "national total printed in the file to within 2%, and because 96% to "
+        "100% of rows close exactly against their own Grand Total. "
         "DataFrame.isna().sum() reports no missing cells in the tidy table, "
         "which is the correct answer only because the parser writes zeros by "
         "omission and the checks confirm the totals.",
@@ -464,49 +466,94 @@ def main():
         "breakpoint on its own, which is why the national line is drawn "
         "beside it.",
     )
-    figure(
-        document, "f4_change.png",
-        "Figure 4. Year-over-year L1 distance between the nationality share "
-        "vectors. Hatched bars compare years that are not adjacent, because "
-        "FY2022 and FY2024 are missing.",
+    paragraph(
+        document,
+        "Table 3 applies the four settings the proposal pre-declared. The "
+        "largest year-over-year change is FY2021 to FY2023 under both L1 "
+        "variants (0.96), but FY2017 to FY2018 under both Jensen\u2013Shannon "
+        "variants (0.38), so the same year wins in only two of the four "
+        "settings.",
+    )
+    table(
+        document,
+        pd.DataFrame(
+            [
+                [row["setting"], "{}\u2013{}".format(
+                    int(row["from"]), int(row["to"])),
+                 "{:.2f}".format(row["largest_change"])]
+                for _, row in settings.iterrows()
+            ],
+            columns=["Setting", "Largest change", "Distance"],
+        ),
+        "Table 3. Largest year-over-year change in the nationality mix under "
+        "each of the four pre-declared settings.",
+        widths=[1.8, 1.4, 1.0],
     )
     paragraph(
         document,
-        "Figure 4 turns composition into a single number: the L1 distance "
-        "between one year's nationality shares and the previous year's, which "
-        "runs from 0 (identical mix) to 2 (no nationality in common). The "
-        "ordinary year-to-year movement is 0.34\u20130.61; FY2020 to "
-        "FY2021 is "
-        "0.78, and the two-year comparisons that straddle the missing files "
-        "are 0.96 and 0.93. We show the gap years differently because a "
-        "two-year distance is not comparable with a one-year distance, and "
-        "the report says so rather than treating all bars as equal.",
+        "The rule also asks whether that change is larger than ordinary "
+        "within-year variation. Using the months with at least 20 Washington "
+        "arrivals, the median month-to-month L1 distance is 1.03 in FY2021 "
+        "(9 usable months) and 0.82 in FY2023 (12 months); FY2025 has only 4 "
+        "usable months and is flagged, as the plan requires. The ratios are "
+        "therefore 0.76 for FY2020 to FY2021 and 1.18 for FY2021 to FY2023 "
+        "\u2014 both far below the threshold of 3. Under the pre-declared "
+        "rule we name no turning-point year and report the two candidate "
+        "transitions instead.",
     )
     figure(
         document, "f5_language.png",
-        "Figure 5. Share of Washington arrivals whose nationality's main "
+        "Figure 4. Share of Washington arrivals whose nationality's main "
         "language has its own Census category, shares one, or falls into a "
-        "residual category. \u201cNot in crosswalk\u201d is left uncovered.",
+        "residual category; \u201cnot in crosswalk\u201d is shown separately.",
     )
     paragraph(
         document,
-        "Figure 5 answers RQ3 for the state table. The share of arrivals in a "
-        "shared category rises to 75.5% in FY2019, almost entirely because "
-        "Ukrainian is counted with Russian and Polish in B16001; by FY2025 "
-        "the own-category share is 39.3% and the residual share 33.3%. The "
-        "figure is a stacked bar rather than a line because the four tiers "
-        "sum to one in each year, and the eye should read the boundary "
-        "movement, not each series separately.",
+        "Figure 4 answers RQ3 for the state table, using each nationality's "
+        "main language. The share of arrivals in a shared category rises to "
+        "76.6% in FY2019, almost entirely because Ukrainian is counted with "
+        "Russian and Polish in B16001; by FY2025 the own-category share is "
+        "52.2% and the residual share 11.5%. The figure is a stacked bar "
+        "rather than a line because the four tiers sum to one in each year, "
+        "and the eye should read the boundary movement, not each series "
+        "separately.",
+    )
+    table(
+        document,
+        pd.DataFrame(
+            [
+                [int(row["fiscal_year"]), "{:,}".format(int(row["arrivals"])),
+                 "{:.0%}".format(row["pessimistic_visible"]),
+                 "{:.0%}".format(row["optimistic_visible"]),
+                 "{:.0%}".format(row["unmapped"])]
+                for _, row in bounds.iterrows()
+            ],
+            columns=["Year", "Arrivals", "Pessimistic", "Optimistic",
+                     "Unmapped"],
+        ),
+        "Table 4. Share of arrivals the state language table can see: "
+        "pessimistic (main language only) and optimistic (any common "
+        "language) rules.",
+        widths=[0.8, 1.0, 1.2, 1.1, 1.0],
+    )
+    paragraph(
+        document,
+        "Table 4 is the range the proposal asks for. In FY2019 the state "
+        "table sees 6.1% of arrivals if only the main language counts and "
+        "84.3% if any common language counts, because Ukrainian and Russian "
+        "each have a category while Somali does not. The range, not either "
+        "endpoint, is the answer, and it is wide enough that no single share "
+        "should be quoted without the rule that produced it.",
     )
     figure(
         document, "f6_counties.png",
-        "Figure 6. Washington counties by the size of the C16001 category "
+        "Figure 5. Washington counties by the size of the C16001 category "
         "\u201cOther and unspecified languages\u201d, with the Census "
         "Bureau's margin of error.",
     )
     paragraph(
         document,
-        "Figure 6 gives the geography RQ3 asks for, but it also shows why the "
+        "Figure 5 gives the geography RQ3 asks for, but it also shows why the "
         "county table has to be a bound rather than a count: King County's "
         "52,078 speakers of \u201cOther and unspecified languages\u201d is "
         "seven times the 7,443 that the state table assigns to the same "
@@ -517,12 +564,12 @@ def main():
     )
     figure(
         document, "f7_ledgers.png",
-        "Figure 7. Afghan and Iraqi arrivals in Washington by report. The SIV "
+        "Figure 6. Afghan and Iraqi arrivals in Washington by report. The SIV "
         "series is available and reconciles only for FY2015\u2013FY2020.",
     )
     paragraph(
         document,
-        "Figure 7 is the two-ledger result. For Afghans the SIV report holds "
+        "Figure 6 is the two-ledger result. For Afghans the SIV report holds "
         "93\u201399% of recorded arrivals in every year shown: 930 SIV "
         "arrivals against 35 refugee arrivals in FY2017, and 618 "
         "FY2019. An analysis that read only the refugee report would "
@@ -542,12 +589,12 @@ def main():
         "outer join, because an inner join would drop exactly the rows that "
         "appear in only one report \u2014 the rows the analysis is about. A "
         "and C are joined through the crosswalk on nationality to language to "
-        "Census category, which is a many-to-one join that must be declared "
-        "rather than assumed. D is not joined at all: it is a second "
-        "publication of the same universe and is used only to check A's "
-        "national monthly totals. The EDA above was run on each of the two "
-        "joins (A+B, A+C) rather than on the individual files, which is what "
-        "the Multiple Datasets requirement asks for.",
+        "Census category, a many-to-one join that must be declared rather "
+        "than assumed. D is not joined at all: it is a second publication of "
+        "the same universe, kept as an independent check. The EDA above was "
+        "run on each of the two joins (A+B, A+C) rather than on the "
+        "individual files, which is what the Multiple Datasets requirement "
+        "asks for.",
     )
 
     heading(document, "5.7 Result validity", level=2)
@@ -561,10 +608,12 @@ def main():
     bullet(
         document,
         "RQ1. H0: the nationality mix is the same in consecutive years. Test: "
-        "L1 distance, with the within-year monthly mix as the null scale. "
-        "Check: only months with at least 20 Washington arrivals have a "
-        "usable share vector; in FY2021 only four months qualify, and the "
-        "report uses the FY2020\u2013FY2021 change with that caveat.",
+        "L1 distance against the within-year monthly mix, in the four "
+        "pre-declared settings. Check: only months with at least 20 "
+        "Washington arrivals have a usable share vector \u2014 nine months in "
+        "FY2021, twelve in FY2023, four in FY2025 \u2014 so FY2025 is flagged "
+        "and its noise is not used. The observed ratios (0.76 and 1.18) fall "
+        "below the threshold of 3, so no year is named.",
     )
     bullet(
         document,
@@ -576,11 +625,12 @@ def main():
     )
     bullet(
         document,
-        "RQ3. H0: the invisible share is zero. Test: a two-bound estimate "
-        "(optimistic and pessimistic crosswalk). Check: Arabic-speaking "
-        "nationalities must come out visible; they do (Iraq, Syria, Sudan all "
-        "map to the Arabic category), which validates the crosswalk before "
-        "any share is reported.",
+        "RQ3. H0: the invisible share is zero. Test: the two-bound estimate "
+        "of Table 4. Check: Arabic-speaking nationalities must come out "
+        "visible; they do (Iraq, Syria and Sudan all map to the Arabic "
+        "category), which validates the crosswalk before any share is "
+        "reported, and the optimistic rule must never see less than the "
+        "pessimistic one \u2014 it does not, in any year.",
     )
     bullet(
         document,
@@ -597,13 +647,26 @@ def main():
         "independently published sources (RPC arrivals, RPC SIV, Census ACS) "
         "are used together, with two joins (A+B, A+C) and two research "
         "questions that each draw on more than one source. Result Validity is "
-        "met in the weak sense: the parser is reconciled against totals "
-        "printed in the files, the crosswalk has a known-answer check, and "
-        "the ledger comparison is symmetric across two nationalities. It is "
-        "weaker than planned because the permutation tests belong to the "
-        "modelling stage and are not part of this EDA. New Library is not yet "
-        "used: ruptures and scipy enter at the modelling stage, and this "
-        "report does not claim them.",
+        "partly met: the parser is reconciled against totals printed in the "
+        "files, the crosswalk has a known-answer check, the language share is "
+        "reported as a two-rule range, and the composition change is tested "
+        "in the four pre-declared settings. The permutation null and the "
+        "change-point estimate belong to the modelling stage and are not part "
+        "of this EDA. New Library is not yet used: ruptures and scipy enter "
+        "at that stage, and this report does not claim them.",
+    )
+    paragraph(
+        document,
+        "Three parts of the proposed plan could not be carried out on the "
+        "published files, and the report states each rather than filling the "
+        "gap: the monthly series covers 36 months (FY2021, FY2023, FY2025) "
+        "instead of the proposed 144, because the spreadsheet years carry "
+        "annual totals only; the two-ledger comparison stops at FY2020 "
+        "instead of FY2025, because the SIV files from FY2021 on do not "
+        "reconcile; and the FY2022 and FY2024 state files are not "
+        "machine-readable at all. The national monthly series is used for the "
+        "break discussion, as the plan anticipated, but the breakpoint test "
+        "itself is deferred.",
     )
 
     heading(document, "7. Work Plan Evaluation")
@@ -617,12 +680,12 @@ def main():
                  "Excel trivial; PDF layouts took most of it"],
                 ["Crosswalk and joins", "9", "3",
                  "17 nationalities mapped, two joins"],
-                ["Analysis and figures", "12", "4", "7 figures, 6 tables"],
+                ["Analysis and figures", "12", "4", "6 figures, 5 tables"],
                 ["Tests and report", "10", "5", "still writing"],
             ],
             columns=["Task", "Planned hours", "Actual hours", "Note"],
         ),
-        "Table 4. Planned versus actual effort.",
+        "Table 5. Planned versus actual effort.",
         widths=[2.2, 0.9, 0.9, 2.4],
     )
     paragraph(
@@ -645,15 +708,16 @@ def main():
         "source files, so a wrong column model cannot pass silently. "
         "test_project.py asserts that FY2025 parses to 38,102 nationally and "
         "that the FY2015\u2013FY2020 Excel years match the totals printed in "
-        "their own files; it checks that every row's twelve monthly values "
-        "sum to its Grand Total; it checks the state list against the 50 "
-        "names used by the Census tables; and it checks the crosswalk with a "
-        "known answer, requiring Arabic-speaking nationalities to land in the "
-        "Arabic category. One test feeds a corrupted row to the validator and "
-        "requires it to raise, which is how we know the checks are not "
-        "vacuous. We test this way because the failure mode we fear is not a "
-        "crash but a plausible wrong number, and only an external anchor "
-        "\u2014 a total printed by the publisher \u2014 catches that.",
+        "their own files; it checks that Washington's monthly rows reconcile "
+        "with its annual total and that the FY2021 and FY2023 state totals "
+        "equal the values the files print; it checks the state list, the "
+        "language tiers and the crosswalk's known answer, requiring "
+        "Arabic-speaking nationalities to land in the Arabic category. One "
+        "test feeds a corrupted total to the validator and requires it to "
+        "raise, which is how we know the checks are not vacuous. We test this "
+        "way because the failure mode we fear is not a crash but a plausible "
+        "wrong number, and only an external anchor \u2014 a total printed by "
+        "the publisher \u2014 catches that.",
     )
 
     heading(document, "9. Collaboration")
@@ -667,7 +731,6 @@ def main():
         "contributed to the analysis.",
     )
 
-    document.add_page_break()
     heading(document, "Appendix A. Largest five nationalities by year")
     rows = []
     for year in sorted(top["fiscal_year"].unique()):

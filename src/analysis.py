@@ -7,6 +7,7 @@ the ACS tables. Results are written to ``outputs/`` so the report and the
 tests can both read them.
 """
 
+import math
 import os
 
 import pandas as pd
@@ -154,9 +155,10 @@ def two_ledgers(annual):
 
 
 def language_shares(wa, crosswalk):
-    """Share of Washington arrivals by how the ACS names their language."""
+    """Share of arrivals by how the ACS names their main language."""
+    main = crosswalk[crosswalk["role"] == "main"]
     merged = wa.merge(
-        crosswalk[["nationality", "language", "tier"]],
+        main[["nationality", "language", "tier"]],
         on="nationality", how="left",
     )
     merged["tier"] = merged["tier"].fillna("not in crosswalk")
@@ -164,6 +166,132 @@ def language_shares(wa, crosswalk):
     table = table.unstack(fill_value=0)
     table = table.div(table.sum(axis=1), axis=0)
     return table
+
+
+def language_bounds(wa, crosswalk):
+    """Share of arrivals the language table can see, under two rules.
+
+    Pessimistic: visible only if the nationality's main language has its own
+    category. Optimistic: visible if any of its common languages does.
+    """
+    flags = crosswalk.groupby("nationality").agg(
+        main_tier=("tier", lambda tiers: tiers.iloc[0]),
+        any_own=("tier", lambda tiers: "own" in set(tiers)),
+    )
+    merged = wa.merge(flags, on="nationality", how="left")
+    merged["main_tier"] = merged["main_tier"].fillna("not in crosswalk")
+    merged["any_own"] = merged["any_own"].fillna(False)
+    merged["pessimistic"] = merged["main_tier"] == "own"
+    rows = []
+    for year, block in merged.groupby("fiscal_year"):
+        total = block["count"].sum()
+        rows.append(
+            {
+                "fiscal_year": year,
+                "arrivals": total,
+                "pessimistic_visible": block.loc[
+                    block["pessimistic"], "count"
+                ].sum() / total,
+                "optimistic_visible": block.loc[
+                    block["any_own"], "count"
+                ].sum() / total,
+                "unmapped": block.loc[
+                    block["main_tier"] == "not in crosswalk", "count"
+                ].sum() / total,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def _share_table(wa, threshold=0):
+    """Nationality shares per year, optionally dropping small ones."""
+    table = wa.pivot_table(
+        index="nationality", columns="fiscal_year",
+        values="count", aggfunc="sum",
+    ).fillna(0)
+    if threshold:
+        table = table[table.max(axis=1) >= threshold]
+    return table.div(table.sum(axis=0), axis=1)
+
+
+def _l1(one, other):
+    """L1 distance between two share vectors."""
+    return float((one - other).abs().sum())
+
+
+def _js(one, other):
+    """Jensen-Shannon distance between two share vectors."""
+    total = 0.0
+    for left, right in zip(one, other):
+        if left > 0 and right > 0:
+            middle = (left + right) / 2
+            total += 0.5 * left * math.log2(left / middle)
+            total += 0.5 * right * math.log2(right / middle)
+    return math.sqrt(max(0.0, total))
+
+
+def rq1_settings(wa):
+    """Largest year-over-year change under the four planned settings."""
+    rows = []
+    for metric, name in ((_l1, "L1"), (_js, "JS")):
+        for threshold in (0, 5):
+            shares = _share_table(wa, threshold)
+            years = [year for year in USABLE if year in shares.columns]
+            best = None
+            for before, after in zip(years, years[1:]):
+                delta = metric(shares[before], shares[after])
+                if best is None or delta > best[2]:
+                    best = (before, after, delta)
+            rows.append(
+                {
+                    "setting": "{} / {}".format(
+                        name, "all" if not threshold else ">=" + str(
+                            threshold)
+                    ),
+                    "from": best[0],
+                    "to": best[1],
+                    "largest_change": best[2],
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def within_year_noise(monthly):
+    """Median month-to-month distance inside a year, by distance metric."""
+    wash = monthly[
+        (monthly["source"] == "refugee") & (monthly["state"] == "Washington")
+    ]
+    rows = []
+    for year in MONTHLY_YEARS:
+        block = wash[wash["fiscal_year"] == year]
+        totals = block.groupby("month")["count"].sum()
+        months = sorted(totals[totals >= 20].index)
+        shares = {}
+        for month in months:
+            vector = block[block["month"] == month].set_index(
+                "nationality"
+            )["count"]
+            shares[month] = vector / vector.sum()
+        for metric, name in ((_l1, "L1"), (_js, "JS")):
+            distances = []
+            for first, second in zip(months, months[1:]):
+                if second - first != 1:
+                    continue
+                joined = pd.concat(
+                    [shares[first], shares[second]], axis=1
+                ).fillna(0)
+                distances.append(metric(joined.iloc[:, 0], joined.iloc[:, 1]))
+            median = float(pd.Series(distances).median()) if distances else 0
+            rows.append(
+                {
+                    "fiscal_year": year,
+                    "metric": name,
+                    "months_used": len(months),
+                    "median_distance": median,
+                    "usable": len(months) >= 6,
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def find_category(frame, keyword):
@@ -246,6 +374,16 @@ def main():
     print("\nYear-over-year L1 composition change")
     print(change.to_string(index=False))
 
+    settings = rq1_settings(wa)
+    settings.to_csv(os.path.join(OUTPUTS, "rq1_settings.csv"), index=False)
+    print("\nRQ1: largest change under each setting")
+    print(settings.to_string(index=False))
+
+    noise = within_year_noise(monthly)
+    noise.to_csv(os.path.join(OUTPUTS, "rq1_noise.csv"), index=False)
+    print("\nRQ1: within-year monthly noise")
+    print(noise.to_string(index=False))
+
     series = monthly_series(monthly)
     series.to_csv(os.path.join(OUTPUTS, "wa_monthly.csv"), index=False)
     print("\nMonthly series", series.shape)
@@ -261,6 +399,11 @@ def main():
     tiers.to_csv(os.path.join(OUTPUTS, "language_tiers.csv"))
     print("\nLanguage tiers by year")
     print(tiers.round(3).to_string())
+
+    bounds = language_bounds(wa, crosswalk)
+    bounds.to_csv(os.path.join(OUTPUTS, "language_bounds.csv"), index=False)
+    print("\nVisible share under the two rules")
+    print(bounds.round(3).to_string(index=False))
 
     state = pd.read_csv(os.path.join(PROCESSED, "acs_state.csv"))
     counties = pd.read_csv(os.path.join(PROCESSED, "acs_counties.csv"))

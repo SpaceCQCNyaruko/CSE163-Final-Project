@@ -405,6 +405,9 @@ def load_all():
                         "count",
                     ]
                 )
+            m = m.drop_duplicates(
+                subset=["state", "nationality", "fiscal_year", "month"]
+            )
             m["source"] = label
             monthly.append(m)
             annual.append(a)

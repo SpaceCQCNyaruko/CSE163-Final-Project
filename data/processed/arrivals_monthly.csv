@@ -130,7 +130,6 @@ California,Moldova,2021,11,5,refugee
 California,Nepal,2021,12,1,refugee
 California,are counted toward the FY refugee,2021,6,5,refugee
 California,are counted toward the FY refugee,2021,7,3,refugee
-California,Nepal,2021,12,1,refugee
 California,Pakistan,2021,6,5,refugee
 California,Pakistan,2021,7,3,refugee
 California,Republic of Sou..,2021,10,1,refugee
@@ -564,12 +563,6 @@ Maryland,are counted toward the FY refugee,2021,5,1,refugee
 Maryland,are counted toward the FY refugee,2021,8,1,refugee
 Maryland,are counted toward the FY refugee,2021,11,5,refugee
 Maryland,are counted toward the FY refugee,2021,12,15,refugee
-Maryland,Dem. Rep. Con..,2021,3,8,refugee
-Maryland,Dem. Rep. Con..,2021,5,7,refugee
-Maryland,Dem. Rep. Con..,2021,9,13,refugee
-Maryland,Dem. Rep. Con..,2021,10,2,refugee
-Maryland,Dem. Rep. Con..,2021,11,14,refugee
-Maryland,Dem. Rep. Con..,2021,12,13,refugee
 Maryland,El Salvador,2021,2,3,refugee
 Maryland,El Salvador,2021,5,1,refugee
 Maryland,El Salvador,2021,8,1,refugee
@@ -798,10 +791,6 @@ Nevada,Iran,2021,7,1,refugee
 Nevada,Iran,2021,8,1,refugee
 Nevada,Iran,2021,9,3,refugee
 Nevada,are counted toward the FY refugee,2021,9,2,refugee
-Nevada,Iran,2021,6,1,refugee
-Nevada,Iran,2021,7,1,refugee
-Nevada,Iran,2021,8,1,refugee
-Nevada,Iran,2021,9,3,refugee
 Nevada,Palestine,2021,9,2,refugee
 Nevada,Sudan,2021,12,2,refugee
 Nevada,Syria,2021,9,4,refugee
@@ -892,7 +881,6 @@ New York,Palestine,2021,10,6,refugee
 New York,Palestine,2021,11,5,refugee
 New York,Republic of Sou..,2021,12,5,refugee
 New York,are counted toward the FY refugee,2021,8,2,refugee
-New York,Republic of Sou..,2021,12,5,refugee
 New York,Russia,2021,8,2,refugee
 New York,Somalia,2021,4,5,refugee
 New York,Somalia,2021,6,1,refugee
@@ -992,7 +980,6 @@ North Dakota,Syria,2021,4,4,refugee
 North Dakota,Syria,2021,12,6,refugee
 North Dakota,Not Available Total,2021,12,10,refugee
 North Dakota,Dem. Rep. Con..,2021,12,8,refugee
-North Dakota,Somalia,2021,12,2,refugee
 Ohio,Afghanistan,2021,4,1,refugee
 Ohio,Afghanistan,2021,7,1,refugee
 Ohio,Afghanistan,2021,8,3,refugee
@@ -1119,8 +1106,6 @@ Pennsylvania,Kazakhstan,2021,9,2,refugee
 Pennsylvania,are counted toward the FY refugee,2021,5,5,refugee
 Pennsylvania,are counted toward the FY refugee,2021,8,1,refugee
 Pennsylvania,are counted toward the FY refugee,2021,10,3,refugee
-Pennsylvania,Kazakhstan,2021,2,3,refugee
-Pennsylvania,Kazakhstan,2021,9,2,refugee
 Pennsylvania,Liberia,2021,5,5,refugee
 Pennsylvania,Liberia,2021,8,1,refugee
 Pennsylvania,Liberia,2021,10,3,refugee
@@ -1476,7 +1461,6 @@ Washington,Ukraine,2021,9,7,refugee
 Washington,Ukraine,2021,10,15,refugee
 Washington,Ukraine,2021,12,33,refugee
 Washington,Uzbekistan,2021,9,2,refugee
-Washington,Uzbekistan,2021,9,2,refugee
 West Virginia,Uganda,2021,8,1,refugee
 West Virginia,Uganda,2021,12,1,refugee
 Wisconsin,Burma,2021,2,4,refugee
@@ -1788,17 +1772,6 @@ Arizona,Sudan,2023,9,22,refugee
 Arizona,Sudan,2023,10,20,refugee
 Arizona,Sudan,2023,11,12,refugee
 Arizona,Sudan,2023,12,8,refugee
-Arizona,Syria,2023,1,11,refugee
-Arizona,Syria,2023,3,14,refugee
-Arizona,Syria,2023,4,13,refugee
-Arizona,Syria,2023,5,10,refugee
-Arizona,Syria,2023,6,24,refugee
-Arizona,Syria,2023,7,13,refugee
-Arizona,Syria,2023,8,22,refugee
-Arizona,Syria,2023,9,83,refugee
-Arizona,Syria,2023,10,70,refugee
-Arizona,Syria,2023,11,27,refugee
-Arizona,Syria,2023,12,91,refugee
 Arizona,Syria,2023,1,11,refugee
 Arizona,Syria,2023,3,14,refugee
 Arizona,Syria,2023,4,13,refugee
@@ -2170,8 +2143,6 @@ Colorado,Syria,2023,11,5,refugee
 Colorado,Syria,2023,12,44,refugee
 Colorado,Uganda,2023,7,3,refugee
 Colorado,Uganda,2023,10,1,refugee
-Colorado,Uganda,2023,7,3,refugee
-Colorado,Uganda,2023,10,1,refugee
 Colorado,Ukraine,2023,5,13,refugee
 Colorado,Ukraine,2023,9,2,refugee
 Colorado,Venezuela,2023,4,4,refugee
@@ -2267,8 +2238,6 @@ Delaware,Venezuela,2023,7,4,refugee
 Delaware,Venezuela,2023,11,1,refugee
 Delaware,Venezuela,2023,12,5,refugee
 District of Columbia,Afghanistan,2023,6,1,refugee
-District of Columbia,Eritrea,2023,7,1,refugee
-District of Columbia,Eritrea,2023,12,1,refugee
 District of Columbia,Eritrea,2023,7,1,refugee
 District of Columbia,Eritrea,2023,12,1,refugee
 Florida,Afghanistan,2023,4,2,refugee
@@ -2652,8 +2621,6 @@ Idaho,Syria,2023,11,25,refugee
 Idaho,Syria,2023,12,20,refugee
 Idaho,Ukraine,2023,8,8,refugee
 Idaho,Ukraine,2023,9,2,refugee
-Idaho,Ukraine,2023,8,8,refugee
-Idaho,Ukraine,2023,9,2,refugee
 Idaho,Venezuela,2023,9,5,refugee
 Idaho,Venezuela,2023,12,4,refugee
 Idaho,Zambia,2023,6,1,refugee
@@ -2815,11 +2782,6 @@ Illinois,Venezuela,2023,8,1,refugee
 Illinois,Venezuela,2023,10,2,refugee
 Illinois,Venezuela,2023,11,19,refugee
 Illinois,Venezuela,2023,12,18,refugee
-Illinois,Yemen,2023,6,6,refugee
-Illinois,Yemen,2023,8,7,refugee
-Illinois,Yemen,2023,9,3,refugee
-Illinois,Yemen,2023,11,1,refugee
-Illinois,Yemen,2023,12,5,refugee
 Illinois,Yemen,2023,6,6,refugee
 Illinois,Yemen,2023,8,7,refugee
 Illinois,Yemen,2023,9,3,refugee
@@ -2988,12 +2950,6 @@ Iowa,Somalia,2023,7,8,refugee
 Iowa,Somalia,2023,8,1,refugee
 Iowa,Somalia,2023,11,15,refugee
 Iowa,Somalia,2023,12,15,refugee
-Iowa,Somalia,2023,5,1,refugee
-Iowa,Somalia,2023,6,4,refugee
-Iowa,Somalia,2023,7,8,refugee
-Iowa,Somalia,2023,8,1,refugee
-Iowa,Somalia,2023,11,15,refugee
-Iowa,Somalia,2023,12,15,refugee
 Iowa,Sudan,2023,2,8,refugee
 Iowa,Sudan,2023,3,5,refugee
 Iowa,Sudan,2023,6,2,refugee
@@ -3153,7 +3109,6 @@ Kentucky,Honduras,2023,8,3,refugee
 Kentucky,Honduras,2023,9,8,refugee
 Kentucky,Honduras,2023,11,5,refugee
 Kentucky,Indonesia,2023,8,3,refugee
-Kentucky,Iran,2023,9,1,refugee
 Kentucky,Iran,2023,9,1,refugee
 Kentucky,Iraq,2023,3,5,refugee
 Kentucky,Iraq,2023,6,10,refugee
@@ -3633,8 +3588,6 @@ Michigan,Jordan,2023,6,1,refugee
 Michigan,Mali,2023,2,2,refugee
 Michigan,Nicaragua,2023,8,1,refugee
 Michigan,Nicaragua,2023,10,1,refugee
-Michigan,Nicaragua,2023,8,1,refugee
-Michigan,Nicaragua,2023,10,1,refugee
 Michigan,Pakistan,2023,9,6,refugee
 Michigan,Pakistan,2023,10,4,refugee
 Michigan,Palestine,2023,5,1,refugee
@@ -3809,7 +3762,6 @@ Minnesota,Ukraine,2023,11,8,refugee
 Minnesota,Venezuela,2023,7,8,refugee
 Minnesota,Venezuela,2023,8,3,refugee
 Minnesota,Venezuela,2023,12,8,refugee
-Minnesota,Vietnam,2023,12,10,refugee
 Minnesota,Vietnam,2023,12,10,refugee
 Minnesota,Yemen,2023,7,2,refugee
 Minnesota,Yemen,2023,11,5,refugee
@@ -4224,7 +4176,6 @@ New Mexico,Burundi,2023,10,2,refugee
 New Mexico,Cameroon,2023,2,5,refugee
 New Mexico,Cameroon,2023,6,3,refugee
 New Mexico,Colombia,2023,7,1,refugee
-New Mexico,Colombia,2023,7,1,refugee
 New Mexico,Dem. Rep.,2023,1,3,refugee
 New Mexico,Dem. Rep.,2023,4,8,refugee
 New Mexico,Dem. Rep.,2023,5,2,refugee
@@ -4628,8 +4579,6 @@ North Carolina,Rwanda,2023,1,6,refugee
 North Carolina,Rwanda,2023,12,3,refugee
 North Carolina,Senegal,2023,3,6,refugee
 North Carolina,Senegal,2023,8,1,refugee
-North Carolina,Senegal,2023,3,6,refugee
-North Carolina,Senegal,2023,8,1,refugee
 North Carolina,Somalia,2023,4,1,refugee
 North Carolina,Somalia,2023,5,1,refugee
 North Carolina,Somalia,2023,7,2,refugee
@@ -4713,9 +4662,6 @@ North Dakota,Venezuela,2023,12,4,refugee
 North Dakota,Not Available Total,2023,11,14,refugee
 North Dakota,Not Available Total,2023,12,14,refugee
 North Dakota,Afghanistan,2023,11,3,refugee
-North Dakota,Dem. Rep.,2023,12,9,refugee
-North Dakota,Somalia,2023,11,6,refugee
-North Dakota,Somalia,2023,12,5,refugee
 North Dakota,Syria,2023,11,5,refugee
 Ohio,Afghanistan,2023,1,1,refugee
 Ohio,Afghanistan,2023,2,8,refugee
@@ -4780,9 +4726,6 @@ Ohio,Eritrea,2023,11,10,refugee
 Ohio,Eritrea,2023,12,1,refugee
 Ohio,Ethiopia,2023,2,5,refugee
 Ohio,Ethiopia,2023,10,2,refugee
-Ohio,Guatemala,2023,3,3,refugee
-Ohio,Guatemala,2023,10,6,refugee
-Ohio,Guatemala,2023,11,6,refugee
 Ohio,Guatemala,2023,3,3,refugee
 Ohio,Guatemala,2023,10,6,refugee
 Ohio,Guatemala,2023,11,6,refugee
@@ -5119,13 +5062,6 @@ Pennsylvania,Iraq,2023,8,5,refugee
 Pennsylvania,Iraq,2023,9,3,refugee
 Pennsylvania,Iraq,2023,10,4,refugee
 Pennsylvania,Iraq,2023,11,1,refugee
-Pennsylvania,Iraq,2023,2,1,refugee
-Pennsylvania,Iraq,2023,6,4,refugee
-Pennsylvania,Iraq,2023,7,2,refugee
-Pennsylvania,Iraq,2023,8,5,refugee
-Pennsylvania,Iraq,2023,9,3,refugee
-Pennsylvania,Iraq,2023,10,4,refugee
-Pennsylvania,Iraq,2023,11,1,refugee
 Pennsylvania,Ivory Coast,2023,2,1,refugee
 Pennsylvania,Ivory Coast,2023,8,1,refugee
 Pennsylvania,Kazakhstan,2023,10,4,refugee
@@ -5269,9 +5205,6 @@ South Carolina,El Salvador,2023,11,5,refugee
 South Carolina,Eritrea,2023,2,1,refugee
 South Carolina,Eritrea,2023,3,1,refugee
 South Carolina,Eritrea,2023,12,3,refugee
-South Carolina,Eritrea,2023,2,1,refugee
-South Carolina,Eritrea,2023,3,1,refugee
-South Carolina,Eritrea,2023,12,3,refugee
 South Carolina,Guatemala,2023,1,8,refugee
 South Carolina,Guatemala,2023,2,10,refugee
 South Carolina,Guatemala,2023,4,4,refugee
@@ -5406,8 +5339,6 @@ Tennessee,El Salvador,2023,12,4,refugee
 Tennessee,Eritrea,2023,2,10,refugee
 Tennessee,Eritrea,2023,3,12,refugee
 Tennessee,Eritrea,2023,10,8,refugee
-Tennessee,Ethiopia,2023,5,1,refugee
-Tennessee,Ethiopia,2023,10,2,refugee
 Tennessee,Ethiopia,2023,5,1,refugee
 Tennessee,Ethiopia,2023,10,2,refugee
 Tennessee,Guatemala,2023,2,5,refugee
@@ -6169,9 +6100,6 @@ Wisconsin,Honduras,2023,7,1,refugee
 Wisconsin,Iran,2023,4,1,refugee
 Wisconsin,Iran,2023,9,4,refugee
 Wisconsin,Iran,2023,10,2,refugee
-Wisconsin,Iran,2023,4,1,refugee
-Wisconsin,Iran,2023,9,4,refugee
-Wisconsin,Iran,2023,10,2,refugee
 Wisconsin,Iraq,2023,8,3,refugee
 Wisconsin,Iraq,2023,11,1,refugee
 Wisconsin,Nicaragua,2023,8,1,refugee
@@ -6507,7 +6435,6 @@ Delaware,Venezuela,2025,3,5,refugee
 Delaware,District of Afghanistan,2025,3,4,refugee
 Delaware,District of Afghanistan,2025,4,2,refugee
 Delaware,Columbia Burkina Faso,2025,1,1,refugee
-Delaware,Colombia,2025,4,5,refugee
 Delaware,District of Eritrea,2025,1,1,refugee
 Delaware,District of Eritrea,2025,2,2,refugee
 Delaware,District of Eritrea,2025,3,1,refugee
@@ -7102,67 +7029,26 @@ Maryland,MassachusettsAfghanistan,2025,1,13,refugee
 Maryland,MassachusettsAfghanistan,2025,2,32,refugee
 Maryland,MassachusettsAfghanistan,2025,3,44,refugee
 Maryland,MassachusettsAfghanistan,2025,4,29,refugee
-Maryland,Burma,2025,2,6,refugee
-Maryland,Burma,2025,3,21,refugee
-Maryland,Burma,2025,4,6,refugee
-Maryland,Burundi,2025,1,1,refugee
 Maryland,Burundi,2025,2,4,refugee
 Maryland,Burundi,2025,4,13,refugee
 Maryland,Cameroon,2025,3,2,refugee
 Maryland,Central African,2025,1,1,refugee
 Maryland,Central African,2025,3,10,refugee
 Maryland,Central African,2025,4,7,refugee
-Maryland,Colombia,2025,1,1,refugee
 Maryland,Colombia,2025,2,6,refugee
-Maryland,Dem. Rep. Congo,2025,1,41,refugee
-Maryland,Dem. Rep. Congo,2025,2,14,refugee
-Maryland,Dem. Rep. Congo,2025,3,48,refugee
-Maryland,Dem. Rep. Congo,2025,4,37,refugee
-Maryland,El Salvador,2025,1,6,refugee
-Maryland,El Salvador,2025,2,7,refugee
-Maryland,El Salvador,2025,4,18,refugee
-Maryland,Eritrea,2025,1,5,refugee
-Maryland,Eritrea,2025,2,3,refugee
-Maryland,Eritrea,2025,3,14,refugee
-Maryland,Eritrea,2025,4,21,refugee
-Maryland,Guatemala,2025,1,18,refugee
-Maryland,Guatemala,2025,2,4,refugee
-Maryland,Guatemala,2025,3,25,refugee
-Maryland,Guatemala,2025,4,3,refugee
 Maryland,Guinea,2025,2,1,refugee
 Maryland,Haiti,2025,4,2,refugee
-Maryland,Honduras,2025,3,2,refugee
-Maryland,Honduras,2025,4,10,refugee
 Maryland,Iran,2025,3,1,refugee
 Maryland,Iraq,2025,1,18,refugee
-Maryland,Iraq,2025,2,12,refugee
-Maryland,Iraq,2025,3,1,refugee
 Maryland,Iraq,2025,4,7,refugee
 Maryland,MassachusettsMali,2025,4,2,refugee
-Maryland,Nicaragua,2025,2,4,refugee
-Maryland,Nicaragua,2025,3,8,refugee
-Maryland,Nicaragua,2025,4,3,refugee
 Maryland,Nigeria,2025,4,7,refugee
-Maryland,Republic of South,2025,4,7,refugee
 Maryland,Rwanda,2025,3,5,refugee
 Maryland,Rwanda,2025,10,8,refugee
-Maryland,Somalia,2025,1,2,refugee
-Maryland,Somalia,2025,2,2,refugee
-Maryland,Somalia,2025,3,7,refugee
 Maryland,Somalia,2025,4,4,refugee
-Maryland,South Africa,2025,12,1,refugee
 Maryland,Sudan,2025,1,1,refugee
-Maryland,Sudan,2025,3,14,refugee
-Maryland,Sudan,2025,4,8,refugee
-Maryland,Syria,2025,1,39,refugee
-Maryland,Syria,2025,2,15,refugee
-Maryland,Syria,2025,3,29,refugee
-Maryland,Syria,2025,4,28,refugee
 Maryland,Ukraine,2025,3,6,refugee
 Maryland,Ukraine,2025,4,5,refugee
-Maryland,Venezuela,2025,2,9,refugee
-Maryland,Venezuela,2025,3,25,refugee
-Maryland,Venezuela,2025,4,37,refugee
 Maryland,Zimbabwe,2025,4,3,refugee
 Michigan,Afghanistan,2025,1,22,refugee
 Michigan,Afghanistan,2025,2,37,refugee
@@ -7481,18 +7367,8 @@ Nevada,Yemen,2025,3,1,refugee
 Nevada,New HampshireAfghanistan,2025,2,14,refugee
 Nevada,New HampshireAfghanistan,2025,3,1,refugee
 Nevada,Burma,2025,2,13,refugee
-Nevada,Burma,2025,3,5,refugee
 Nevada,Burundi,2025,1,3,refugee
-Nevada,Dem. Rep. Congo,2025,1,6,refugee
-Nevada,Dem. Rep. Congo,2025,2,18,refugee
-Nevada,Dem. Rep. Congo,2025,3,22,refugee
-Nevada,Dem. Rep. Congo,2025,4,6,refugee
-Nevada,Nicaragua,2025,4,3,refugee
 Nevada,Rwanda,2025,1,6,refugee
-Nevada,Syria,2025,3,3,refugee
-Nevada,Syria,2025,4,2,refugee
-Nevada,Venezuela,2025,3,5,refugee
-Nevada,Venezuela,2025,4,17,refugee
 New Jersey,Afghanistan,2025,2,19,refugee
 New Jersey,Afghanistan,2025,3,20,refugee
 New Jersey,Afghanistan,2025,4,4,refugee
@@ -7751,14 +7627,11 @@ North Dakota,Not Available Afghanistan,2025,7,4,refugee
 North Dakota,Not Available Afghanistan,2025,8,2,refugee
 North Dakota,Not Available Afghanistan,2025,11,5,refugee
 North Dakota,Not Available Afghanistan,2025,12,1,refugee
-North Dakota,Dem. Rep. Congo,2025,3,1,refugee
-North Dakota,Dem. Rep. Congo,2025,4,2,refugee
 North Dakota,El Salvador,2025,1,1,refugee
 North Dakota,El Salvador,2025,3,1,refugee
 North Dakota,El Salvador,2025,12,1,refugee
 North Dakota,Not Available Guatemala,2025,8,1,refugee
 North Dakota,Not Available Guatemala,2025,9,2,refugee
-North Dakota,Nicaragua,2025,4,1,refugee
 Ohio,Afghanistan,2025,1,45,refugee
 Ohio,Afghanistan,2025,2,24,refugee
 Ohio,Afghanistan,2025,3,50,refugee
@@ -11622,190 +11495,43 @@ Colorado,Iraq,2016,12,5,siv
 Connecticut,Iraq,2016,5,4,siv
 Connecticut,Iraq,2016,9,2,siv
 Connecticut,Iraq,2016,12,4,siv
-Connecticut,District of,2016,9,1,siv
 Connecticut,District of,2016,11,5,siv
-Florida,District of,2016,1,1,siv
-Florida,District of,2016,2,9,siv
-Florida,District of,2016,4,10,siv
-Florida,District of,2016,5,1,siv
-Florida,District of,2016,7,8,siv
-Florida,District of,2016,8,18,siv
-Florida,District of,2016,9,3,siv
-Florida,District of,2016,10,5,siv
-Florida,District of,2016,11,22,siv
-Florida,District of,2016,12,1,siv
-Georgia,District of,2016,2,1,siv
 Georgia,District of,2016,9,3,siv
-Georgia,District of,2016,12,5,siv
-Idaho,District of,2016,10,4,siv
 Idaho,District of,2016,11,2,siv
 Idaho,District of,2016,12,1,siv
-Illinois,District of,2016,2,12,siv
-Illinois,District of,2016,3,29,siv
-Illinois,District of,2016,4,1,siv
-Illinois,District of,2016,5,2,siv
-Illinois,District of,2016,6,5,siv
-Illinois,District of,2016,7,9,siv
 Illinois,District of,2016,8,8,siv
 Illinois,District of,2016,9,9,siv
 Illinois,District of,2016,10,7,siv
-Illinois,District of,2016,11,13,siv
-Illinois,District of,2016,12,4,siv
-Indiana,District of,2016,4,5,siv
 Iowa,District of,2016,6,1,siv
-Iowa,District of,2016,12,3,siv
-Kansas,District of,2016,5,1,siv
-Kansas,District of,2016,7,4,siv
-Kentucky,District of,2016,2,8,siv
-Kentucky,District of,2016,3,1,siv
-Kentucky,District of,2016,4,4,siv
-Kentucky,District of,2016,5,7,siv
-Kentucky,District of,2016,7,10,siv
-Kentucky,District of,2016,12,8,siv
 Louisiana,District of,2016,6,4,siv
-Maine,District of,2016,2,7,siv
 Maine,District of,2016,5,7,siv
 Maine,District of,2016,6,3,siv
 Maine,District of,2016,10,2,siv
 Maine,District of,2016,11,4,siv
-Maryland,District of,2016,1,11,siv
-Maryland,District of,2016,2,3,siv
-Maryland,District of,2016,3,4,siv
-Maryland,District of,2016,5,4,siv
-Maryland,District of,2016,6,4,siv
-Maryland,District of,2016,8,1,siv
-Maryland,District of,2016,10,7,siv
-Massachusetts,District of,2016,3,2,siv
-Massachusetts,District of,2016,5,1,siv
-Massachusetts,District of,2016,6,7,siv
 Massachusetts,District of,2016,7,3,siv
 Massachusetts,District of,2016,8,1,siv
 Massachusetts,District of,2016,9,5,siv
-Massachusetts,District of,2016,11,1,siv
-Michigan,District of,2016,1,1,siv
-Michigan,District of,2016,2,19,siv
 Michigan,District of,2016,4,7,siv
-Michigan,District of,2016,5,6,siv
-Michigan,District of,2016,6,11,siv
-Michigan,District of,2016,7,4,siv
-Michigan,District of,2016,8,8,siv
 Michigan,District of,2016,9,9,siv
-Michigan,District of,2016,10,4,siv
-Michigan,District of,2016,11,6,siv
-Minnesota,District of,2016,2,4,siv
 Minnesota,District of,2016,7,4,siv
-Missouri,District of,2016,3,1,siv
-Missouri,District of,2016,4,1,siv
-Missouri,District of,2016,6,1,siv
-Missouri,District of,2016,7,4,siv
-Missouri,District of,2016,8,1,siv
 Missouri,District of,2016,9,1,siv
-Missouri,District of,2016,11,4,siv
-Missouri,District of,2016,12,1,siv
-Nebraska,District of,2016,1,2,siv
 Nebraska,District of,2016,2,9,siv
-Nebraska,District of,2016,4,17,siv
-Nebraska,District of,2016,5,6,siv
 Nebraska,District of,2016,6,11,siv
-Nebraska,District of,2016,7,1,siv
 Nebraska,District of,2016,9,10,siv
-Nebraska,District of,2016,10,10,siv
-Nebraska,District of,2016,11,9,siv
-Nebraska,District of,2016,12,18,siv
-Nevada,District of,2016,8,7,siv
-New Jersey,District of,2016,4,2,siv
 New Jersey,District of,2016,11,8,siv
-New Mexico,District of,2016,9,1,siv
-New York,District of,2016,2,3,siv
-New York,District of,2016,3,1,siv
-New York,District of,2016,4,15,siv
-New York,District of,2016,5,6,siv
-New York,District of,2016,7,8,siv
-New York,District of,2016,10,22,siv
-New York,District of,2016,11,10,siv
-North Carolina,District of,2016,2,5,siv
-North Carolina,District of,2016,3,1,siv
-North Carolina,District of,2016,6,1,siv
-North Carolina,District of,2016,8,6,siv
-North Carolina,District of,2016,11,1,siv
-North Dakota,District of,2016,4,7,siv
 North Dakota,District of,2016,8,2,siv
-Ohio,District of,2016,2,5,siv
 Ohio,District of,2016,4,5,siv
-Ohio,District of,2016,5,3,siv
-Ohio,District of,2016,6,16,siv
 Ohio,District of,2016,8,1,siv
 Ohio,District of,2016,9,8,siv
-Ohio,District of,2016,10,1,siv
-Ohio,District of,2016,11,7,siv
-Ohio,District of,2016,12,1,siv
 Oklahoma,District of,2016,4,2,siv
 Oklahoma,District of,2016,9,10,siv
-Oregon,District of,2016,1,1,siv
-Oregon,District of,2016,2,5,siv
-Oregon,District of,2016,3,14,siv
-Oregon,District of,2016,5,1,siv
-Oregon,District of,2016,6,1,siv
-Oregon,District of,2016,10,4,siv
-Oregon,District of,2016,11,1,siv
-Pennsylvania,District of,2016,2,1,siv
-Pennsylvania,District of,2016,4,7,siv
-Pennsylvania,District of,2016,5,1,siv
-Pennsylvania,District of,2016,6,4,siv
 Pennsylvania,District of,2016,7,4,siv
-Pennsylvania,District of,2016,8,4,siv
-Pennsylvania,District of,2016,10,2,siv
-Pennsylvania,District of,2016,11,8,siv
 South Carolina,District of,2016,11,6,siv
-South Dakota,District of,2016,3,5,siv
-Tennessee,District of,2016,1,3,siv
-Tennessee,District of,2016,2,4,siv
 Tennessee,District of,2016,4,8,siv
-Tennessee,District of,2016,5,1,siv
-Tennessee,District of,2016,6,5,siv
-Tennessee,District of,2016,7,2,siv
-Tennessee,District of,2016,8,5,siv
 Tennessee,District of,2016,10,4,siv
-Tennessee,District of,2016,11,9,siv
-Texas,District of,2016,1,23,siv
-Texas,District of,2016,2,73,siv
-Texas,District of,2016,3,24,siv
-Texas,District of,2016,4,72,siv
-Texas,District of,2016,5,30,siv
-Texas,District of,2016,6,58,siv
-Texas,District of,2016,7,32,siv
-Texas,District of,2016,8,23,siv
-Texas,District of,2016,9,86,siv
-Texas,District of,2016,10,55,siv
-Texas,District of,2016,11,66,siv
-Texas,District of,2016,12,53,siv
-Utah,District of,2016,3,4,siv
-Utah,District of,2016,4,8,siv
 Utah,District of,2016,5,1,siv
 Utah,District of,2016,7,5,siv
-Virginia,District of,2016,2,1,siv
-Virginia,District of,2016,3,16,siv
-Virginia,District of,2016,4,27,siv
-Virginia,District of,2016,6,8,siv
-Virginia,District of,2016,9,12,siv
-Virginia,District of,2016,10,4,siv
-Virginia,District of,2016,11,8,siv
-Virginia,District of,2016,12,4,siv
-Washington,District of,2016,1,10,siv
-Washington,District of,2016,2,12,siv
-Washington,District of,2016,3,12,siv
-Washington,District of,2016,4,10,siv
-Washington,District of,2016,5,21,siv
-Washington,District of,2016,6,12,siv
-Washington,District of,2016,7,2,siv
-Washington,District of,2016,8,1,siv
-Washington,District of,2016,9,4,siv
-Washington,District of,2016,10,20,siv
-Washington,District of,2016,11,20,siv
 West Virginia,District of,2016,11,3,siv
-Wisconsin,District of,2016,3,4,siv
-Wisconsin,District of,2016,4,1,siv
-Wisconsin,District of,2016,6,4,siv
 Wisconsin,District of,2016,9,4,siv
 Alabama,Afghanistan,2017,6,4,siv
 Arizona,Afghanistan,2017,1,10,siv
