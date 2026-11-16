@@ -21,6 +21,9 @@ OUTPUTS = "outputs"
 # state breakdown because its single-page PDF packs state and nationality into
 # one column. See the report's data-quality section.
 USABLE = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2023, 2025]
+# FY2026 prints one row per state with a broken nationality column, so its
+# state totals are usable even though its composition is not.
+TOTAL_YEARS = USABLE + [2026]
 SIV_USABLE = [2015, 2017, 2018, 2019, 2020]
 MONTHLY_YEARS = [2021, 2023, 2025]
 MONTH_LABELS = [
@@ -58,12 +61,12 @@ def find_column(frame, keyword, exclude=()):
     return hits[0]
 
 
-def washington(annual):
+def washington(annual, years=None):
     """Washington refugee arrivals, one row per year and nationality."""
     rows = annual[
         (annual["source"] == "refugee")
         & (annual["state"] == "Washington")
-        & (annual["fiscal_year"].isin(USABLE))
+        & (annual["fiscal_year"].isin(years or USABLE))
     ]
     return rows[["fiscal_year", "nationality", "count"]].copy()
 
@@ -356,12 +359,21 @@ def main():
     wa = washington(annual)
     crosswalk = pd.read_csv(os.path.join("data", "crosswalk.csv"))
 
-    totals = wa.groupby("fiscal_year")["count"].sum()
+    totals = washington(annual, TOTAL_YEARS).groupby(
+        "fiscal_year"
+    )["count"].sum()
     totals.to_frame("arrivals").to_csv(
         os.path.join(OUTPUTS, "wa_annual.csv")
     )
     print("Washington arrivals by year")
     print(totals.to_string())
+    print("seven-number summary")
+    print(
+        "n", len(totals), "mean", round(totals.mean()),
+        "sd", round(totals.std()), "min", totals.min(),
+        "q1", totals.quantile(0.25), "med", totals.median(),
+        "q3", totals.quantile(0.75), "max", totals.max(),
+    )
 
     top = top_table(wa)
     top.to_csv(os.path.join(OUTPUTS, "wa_top5.csv"), index=False)

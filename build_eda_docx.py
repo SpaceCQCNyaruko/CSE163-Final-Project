@@ -320,11 +320,13 @@ def main():
         "year and month. Parsing the nine usable refugee years yields 7,353 "
         "annual state-nationality rows, of which 17,568 arrivals are in "
         "Washington; the three years with monthly columns add 8,393 rows. "
-        "Each row is therefore a count of people of one nationality who "
-        "arrived in one state in one month of one fiscal year; the columns "
-        "are the state of initial resettlement, the nationality, the fiscal "
-        "year, the month and the count. The SIV table has the same shape but "
-        "no month column, and the ACS tables hold one row per geography.",
+        "FY2026 adds 49 further rows, one per state, but its nationality "
+        "column is broken, so those rows support the totals only. Each row is "
+        "therefore a count of people of one nationality who arrived in one "
+        "state in one month of one fiscal year; the columns are the state of "
+        "initial resettlement, the nationality, the fiscal year, the month "
+        "and the count. The SIV table has the same shape but no month column, "
+        "and the ACS tables hold one row per geography.",
     )
 
     heading(document, "5.2 Missing data", level=2)
@@ -343,15 +345,18 @@ def main():
     paragraph(
         document,
         "Three years are genuinely missing, and each fails for a different "
-        "reason. FY2022 arrives as a mixed PDF: 18 of its 19 pages are "
-        "scanned images with no text layer. FY2024 uses a subset font without "
-        "a Unicode mapping, so every glyph comes back as a code point "
-        "(\u201cPLMSJ\u201d for a number) and no row can be trusted. FY2026 "
-        "fits the whole country on a single page, packing state and "
-        "nationality into one narrow column; its national total parses, but "
-        "the state breakdown does not. We report the three failures rather "
-        "than imputing them, and Table 2 shows what the parser does "
-        "reproduce.",
+        "reason. FY2022 arrives as a mixed PDF: 18 of its 19 pages contain "
+        "one raster image and no text at all, so only page 1 can be read. "
+        "FY2024 has text, but its single Type 1 font carries no Unicode map, "
+        "so every extractor returns the byte behind each glyph "
+        "(\u201cPLMSJ\u201d for a number) and no row can be trusted. "
+        "FY2026 is "
+        "different again: the file prints each state once and labels every "
+        "one of them \u201cSouth Africa\u201d, 52 times over, so the state "
+        "totals are sound (Washington's 480 arrives correctly) but the file "
+        "contains no nationality breakdown to parse. We report the three "
+        "failures rather than imputing them, and Table 2 shows what the "
+        "parser does reproduce.",
     )
     table(
         document,
@@ -365,7 +370,7 @@ def main():
                 ["2024", "PDF", "not parsed", "\u2014", "\u2014", "\u2014"],
                 ["2025", "PDF", "37,499", "38,102 (\u22121.6%)", "1,271",
                  "not printed"],
-                ["2026", "PDF", "16,289", "16,292 (\u22120.02%)", "not parsed",
+                ["2026", "PDF", "16,289", "16,292 (\u22120.02%)", "480",
                  "not printed"],
             ],
             columns=["Fiscal year", "Format", "Parsed national",
@@ -396,12 +401,13 @@ def main():
     heading(document, "5.4 Summary of each variable", level=2)
     paragraph(
         document,
-        "Washington's nine observed years average 1,952 arrivals (standard "
-        "deviation 920), with a minimum of 480 (FY2021), first quartile "
-        "1,271, median 1,947, third quartile 2,625 and maximum 3,233 "
+        "Washington's ten observed years average 1,805 arrivals (standard "
+        "deviation 984), with a minimum of 480 (FY2021 and FY2026), first "
+        "quartile 1,149, median 1,750, third quartile 2,576 and maximum 3,233 "
         "(FY2016). The distribution is not a trend: FY2015\u2013FY2017 sit "
         "near 3,000, FY2018\u2013FY2020 fall by half, FY2021 collapses to "
-        "480, FY2023 returns to 2,429, and FY2025 falls to 1,271. A linear "
+        "480, FY2023 returns to 2,429, FY2025 falls to 1,271 and FY2026, the "
+        "year the admission suspension covers, closes at 480. A linear "
         "summary of this series would be misleading, which is why Figure 1 "
         "uses a bar per year rather than a fitted line.",
     )
@@ -420,10 +426,10 @@ def main():
     heading(document, "5.5 Visualisations", level=2)
     figure(
         document, "f1_annual.png",
-        "Figure 1. Washington's refugee arrivals by fiscal year. Bars are "
-        "years the parser reproduces; hatched bars are years whose file "
-        "cannot be read (FY2022 scanned images, FY2024 broken font) or whose "
-        "state breakdown does not parse (FY2026).",
+        "Figure 1. Washington's refugee arrivals by fiscal year. Hatched bars "
+        "are the two years whose file cannot be read at all (FY2022 raster "
+        "images, FY2024 font without a Unicode map). FY2026 has no "
+        "nationality breakdown but its state total is sound, so it is shown.",
     )
     paragraph(
         document,
