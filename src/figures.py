@@ -143,28 +143,29 @@ def monthly_series():
     plt.close(figure)
 
 
-def change():
-    """L1 change between consecutive observed years."""
-    frame = pd.read_csv(os.path.join(OUTPUTS, "wa_change.csv"))
-    labels = [
-        "{}{}".format(int(row["from"]), "'" + str(int(row["to"]))[-2:])
-        for _, row in frame.iterrows()
-    ]
-    figure, axes = plt.subplots(figsize=(6.4, 2.6))
-    bars = axes.bar(labels, frame["l1_change"], color=COLORS[1], width=0.65)
-    for bar, gap in zip(bars, frame["gap_years"]):
-        if gap > 1:
-            bar.set_hatch("//")
-            axes.text(
-                bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
-                "{}y gap".format(int(gap)), ha="center", fontsize=6,
-                color="#555555",
-            )
-    axes.set_ylabel("L1 distance")
+def siv_share():
+    """Share of recorded arrivals that appears only in the SIV report."""
+    frame = pd.read_csv(os.path.join(OUTPUTS, "two_ledgers.csv"))
+    figure, axes = plt.subplots(figsize=(6.4, 2.3))
+    for colour, name in zip(COLORS, ("Afghanistan", "Iraq")):
+        block = frame[frame["nationality"] == name].sort_values(
+            "fiscal_year"
+        )
+        axes.plot(
+            block["fiscal_year"], block["siv_share"], marker="o", ms=4,
+            lw=1.4, color=colour, label=name,
+        )
+    years = sorted(frame["fiscal_year"].unique())
+    axes.set_xticks(years)
+    axes.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+    axes.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
+    axes.set_xlabel("Fiscal year")
+    axes.set_ylabel("SIV share of recorded arrivals")
     axes.set_ylim(0, 1.05)
-    axes.set_title("Year-over-year change in the nationality mix")
+    axes.legend(frameon=False, fontsize=7, loc="center right")
+    axes.set_title("How much of the recorded count the refugee report misses")
     figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f4_change.png"))
+    figure.savefig(os.path.join(FIGURES, "f8_siv_share.png"))
     plt.close(figure)
 
 
@@ -248,10 +249,10 @@ def main():
     annual_arrivals()
     composition()
     monthly_series()
-    change()
     language_tiers()
     counties()
     ledgers()
+    siv_share()
     print("figures written to", FIGURES)
 
 

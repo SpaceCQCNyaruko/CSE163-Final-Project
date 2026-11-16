@@ -381,6 +381,18 @@ def main():
     first = top[top["rank"] == 1][["fiscal_year", "nationality", "share"]]
     print(first.to_string(index=False))
 
+    every = wa.groupby("nationality")["count"].sum()
+    every = every.sort_values(ascending=False)
+    pd.DataFrame(
+        {
+            "nationality": every.index,
+            "arrivals": every.values,
+            "share": (every / every.sum()).values,
+        }
+    ).to_csv(os.path.join(OUTPUTS, "wa_nationalities.csv"), index=False)
+    print("\ndistinct nationalities", len(every),
+          "covering", int(every.sum()), "arrivals")
+
     change, shares = composition_change(wa)
     change.to_csv(os.path.join(OUTPUTS, "wa_change.csv"), index=False)
     print("\nYear-over-year L1 composition change")

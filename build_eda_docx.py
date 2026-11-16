@@ -577,8 +577,8 @@ def main():
         document,
         "Figure 6 is the two-ledger result. For Afghans the SIV report holds "
         "93\u201399% of recorded arrivals in every year shown: 930 SIV "
-        "arrivals against 35 refugee arrivals in FY2017, and 618 "
-        "FY2019. An analysis that read only the refugee report would "
+        "arrivals against 35 refugee arrivals in FY2017, and 618 against 29 "
+        "in FY2019. An analysis that read only the refugee report would "
         "conclude that almost no Afghans came to Washington in those years. "
         "Iraq runs the other way: 78\u201393% of its recorded arrivals are in "
         "the refugee report in every year but FY2018, when the total was 25 "
@@ -586,6 +586,22 @@ def main():
         "the pattern is about programme, not about the tabulation: the same "
         "two files, read the same way, produce opposite answers for two "
         "nationalities.",
+    )
+    figure(
+        document, "f8_siv_share.png",
+        "Figure 7. Share of recorded Afghan and Iraqi arrivals that appears "
+        "only in the SIV report, for the five years both reports cover.",
+    )
+    paragraph(
+        document,
+        "Figure 7 restates the same two nationalities as a share, which is "
+        "the quantity RQ4 asks about. A line is the right form because the "
+        "question is whether the share moved, not how many people it "
+        "represents: Afghanistan sits between 93% and 99% in every year, "
+        "Iraq between 7% and 22% except FY2018, when the denominator is 25 "
+        "people. Read with Figure 6, it says that for Afghans the SIV report "
+        "is not a supplement to the refugee report; it is the larger half of "
+        "the record.",
     )
 
     heading(document, "5.6 How the datasets relate", level=2)
@@ -686,7 +702,7 @@ def main():
                  "Excel trivial; PDF layouts took most of it"],
                 ["Crosswalk and joins", "9", "3",
                  "17 nationalities mapped, two joins"],
-                ["Analysis and figures", "12", "4", "6 figures, 5 tables"],
+                ["Analysis and figures", "12", "4", "7 figures, 5 tables"],
                 ["Tests and report", "10", "5", "still writing"],
             ],
             columns=["Task", "Planned hours", "Actual hours", "Note"],
@@ -769,6 +785,31 @@ def main():
           "Table C1. C16001 'Other and unspecified languages', estimate and "
           "margin of error.",
           widths=[2.4, 1.4, 1.4], size=8)
+
+    heading(document, "Appendix D. Every nationality in the Washington data")
+    names = pd.read_csv(os.path.join(OUTPUTS, "wa_nationalities.csv"))
+    half = (len(names) + 1) // 2
+    left = names.iloc[:half].reset_index(drop=True)
+    right = names.iloc[half:].reset_index(drop=True)
+    rows = []
+    for index in range(half):
+        row = [left.loc[index, "nationality"],
+               "{:,}".format(int(left.loc[index, "arrivals"]))]
+        if index < len(right):
+            row += [right.loc[index, "nationality"],
+                    "{:,}".format(int(right.loc[index, "arrivals"]))]
+        else:
+            row += ["", ""]
+        rows.append(row)
+    table(
+        document,
+        pd.DataFrame(rows, columns=["Nationality", "Arrivals",
+                                    "Nationality", "Arrivals"]),
+        "Table D1. All {} nationalities that appear in Washington, "
+        "FY2015\u2013FY2025, with total arrivals. Names are reproduced as the "
+        "PDF prints them, truncations included.".format(len(names)),
+        widths=[1.9, 0.8, 1.9, 0.8], size=7.5,
+    )
 
     document.save("eda.docx")
     print("saved eda.docx")
