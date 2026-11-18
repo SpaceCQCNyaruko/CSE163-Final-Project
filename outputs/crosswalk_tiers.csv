@@ -1,0 +1,31 @@
+nationality,language,role,census_code,b16001_category,c16001_category,source,b16001_tier,c16001_tier
+Ukraine,Ukrainian,main,1260,Ukrainian or other Slavic languages,"Russian, Polish, or other Slavic languages",Census code list (Slavic 1250-1280); B16001 label,shared,residual
+Ukraine,Russian,other,1250,Russian,"Russian, Polish, or other Slavic languages",Census code list; B16001 label,own,shared
+Afghanistan,Dari,main,1292,"Persian (incl. Farsi, Dari)",Other Indo-European languages,Census code list (Persian 1289-1307); B16001 label,shared,residual
+Afghanistan,Pashto,other,1327,Other Indo-European languages,Other Indo-European languages,Census language-use page (42-group examples: Pashto),residual,residual
+Iraq,Arabic,main,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+Iraq,Kurdish,other,1315,Other Indo-European languages,Other Indo-European languages,Census code list (Indo-Iranian outside Persian 1289-1307),residual,residual
+Syria,Arabic,main,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+Syria,Kurdish,other,1315,Other Indo-European languages,Other Indo-European languages,Census code list (Indo-Iranian outside Persian 1289-1307),residual,residual
+Sudan,Arabic,main,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+Somalia,Somali,main,4840,"Amharic, Somali, or other Afro-Asiatic languages",Other and unspecified languages,Census code list (Cushitic 4790-4855); B16001 label,shared,residual
+Somalia,Arabic,other,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+Ethiopia,Amharic,main,4590,"Amharic, Somali, or other Afro-Asiatic languages",Other and unspecified languages,Census code list (Semitic 4500-4644); B16001 label,shared,residual
+Ethiopia,Oromo,other,4830,"Amharic, Somali, or other Afro-Asiatic languages",Other and unspecified languages,Census code list (Cushitic 4790-4855),residual,residual
+Eritrea,Tigrinya,main,4640,"Amharic, Somali, or other Afro-Asiatic languages",Other and unspecified languages,Census language-use page (42-group examples: Tigrinya),residual,residual
+Eritrea,Arabic,other,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+Burma,Burmese,main,2160,Other languages of Asia,Other Asian and Pacific Island languages,Census language-use page (42-group examples: Burmese),residual,residual
+Burma,Karen,other,2350,Other languages of Asia,Other Asian and Pacific Island languages,Census language-use page (42-group examples: Karen),residual,residual
+Dem. Rep. Congo,French,main,1170,French (incl. Cajun),"French, Haitian, or Cajun",Census code list (French 1170-1175); B16001 label,own,shared
+Dem. Rep. Congo,Swahili,other,5150,"Swahili or other languages of Central, Eastern, and Southern Africa",Other and unspecified languages,Census code list (Swahili 5150-5159); B16001 label,shared,residual
+Dem. Rep. Congo,Lingala,other,5645,"Swahili or other languages of Central, Eastern, and Southern Africa",Other and unspecified languages,Census language-use page (42-group examples: Lingala),residual,residual
+Moldova,Romanian,main,1220,Other Indo-European languages,Other Indo-European languages,Census language-use page (42-group examples: Romanian),residual,residual
+Moldova,Russian,other,1250,Russian,"Russian, Polish, or other Slavic languages",Census code list; B16001 label,own,shared
+Iran,Persian,main,1290,"Persian (incl. Farsi, Dari)",Other Indo-European languages,Census code list (Persian 1289-1307); B16001 label,own,residual
+Russia,Russian,main,1250,Russian,"Russian, Polish, or other Slavic languages",Census code list; B16001 label,own,shared
+Venezuela,Spanish,main,1200,Spanish,Spanish,Census code list (Spanish 1200-1205); B16001 label,own,own
+Bhutan,Nepali,main,1500,"Nepali, Marathi, or other Indic languages",Other Indo-European languages,Census language-use page (42-group examples: Nepali),shared,residual
+Bhutan,Dzongkha,other,2085,Other languages of Asia,Other Asian and Pacific Island languages,Census code list (Tibeto-Burman 2060-2429),residual,residual
+Republic of South Sudan,Dinka,main,4965,Other and unspecified languages,Other and unspecified languages,Census code list (Nilo-Saharan 4900-5119); 42-group not named on the language-use page,residual,residual
+Republic of South Sudan,Arabic,other,4500,Arabic,Arabic,Census code list (Arabic 4500-4544); B16001 label,own,own
+South Africa,Afrikaans,main,1134,"Yiddish, Pennsylvania Dutch or other West Germanic languages",German or other West Germanic languages,Census code list (West Germanic outside German 1110-1124),residual,residual

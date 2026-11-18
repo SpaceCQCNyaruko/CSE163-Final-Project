@@ -1,259 +1,319 @@
-"""Draw the figures used in the EDA report.
-
-Each function reads one table from ``outputs/`` and saves a PNG in
-``figures/``. Captions live in the report, so the titles here only name the
-axes and the subset of data on display.
+"""
+Charlie Cheng, Zhongtian Liu
+CSE 163
+Draws the EDA figures from the tables in outputs/ and saves them as PNG
+files in figures/. Captions are written in the report; each figure's title
+names what is plotted.
 """
 
 import os
 
 import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.ticker
+import pandas as pd
+
+import analysis
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import pandas as pd  # noqa: E402
 
 OUTPUTS = "outputs"
 FIGURES = "figures"
-ALL_YEARS = list(range(2015, 2027))
-MONTH_LABELS = [
-    "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
-    "Apr", "May", "Jun", "Jul", "Aug", "Sep",
-]
-COLORS = ["#1f4e79", "#2e75b6", "#9dc3e6", "#c55a11", "#f4b183",
-          "#7f7f7f", "#d9d9d9"]
+PROCESSED = os.path.join("data", "processed")
+# Categorical slots in their fixed, colorblind-checked order, then gray for
+# 'Other'. Ordinal blues for the language tiers (most visible = darkest).
+SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300",
+          "#6250d6"]
+OTHER = "#b4b2a9"
+TIERS = {"own": "#0d366b", "shared": "#1c5cab", "residual": "#86b6ef",
+         "not in crosswalk": OTHER}
+INK = "#52514e"
+GRID = "#e6e5e1"
+SHADE = "#f1f0ec"
+WIDTH = 6.5
+TOP_SERIES = 7
 
 
-def setup():
-    """Apply one visual style to every figure."""
-    os.makedirs(FIGURES, exist_ok=True)
-    plt.rcParams.update(
-        {
-            "figure.dpi": 150,
-            "font.size": 9,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "axes.grid": True,
-            "grid.color": "#e6e6e6",
-            "axes.axisbelow": True,
-        }
-    )
-
-
-def annual_arrivals():
-    """Bar chart of Washington's refugee arrivals per fiscal year."""
-    annual = pd.read_csv(os.path.join(OUTPUTS, "wa_annual.csv"))
-    values = dict(zip(annual["fiscal_year"], annual["arrivals"]))
-    heights = [values.get(year, 0) for year in ALL_YEARS]
-    figure, axes = plt.subplots(figsize=(6.4, 2.8))
-    bars = axes.bar(
-        [str(year) for year in ALL_YEARS], heights,
-        color=COLORS[0], width=0.7,
-    )
-    for year, bar in zip(ALL_YEARS, bars):
-        if year not in values:
-            bar.set_hatch("///")
-            bar.set_color("#ffffff")
-            bar.set_edgecolor("#999999")
-            axes.text(
-                bar.get_x() + bar.get_width() / 2, 40, "no data",
-                rotation=90, ha="center", va="bottom", fontsize=6,
-                color="#777777",
-            )
-    axes.set_ylabel("Refugee arrivals")
-    axes.set_title("Washington State refugee arrivals by fiscal year")
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f1_annual.png"))
-    plt.close(figure)
-
-
-def composition():
-    """Stacked bars of the five largest nationalities each year."""
-    top = pd.read_csv(os.path.join(OUTPUTS, "wa_top5.csv"))
-    years = sorted(top["fiscal_year"].unique())
-    names = (
-        top.groupby("nationality")["count"].sum()
-        .sort_values(ascending=False).head(5).index.tolist()
-    )
-    figure, axes = plt.subplots(figsize=(6.4, 3.0))
-    bottom = [0.0] * len(years)
-    for colour, name in zip(COLORS, names):
-        shares = []
-        for year in years:
-            selected = (top["fiscal_year"] == year) & (
-                top["nationality"] == name
-            )
-            row = top[selected]
-            shares.append(float(row["share"].iloc[0]) if len(row) else 0.0)
-        axes.bar(
-            [str(year) for year in years], shares, bottom=bottom,
-            label=name, color=colour,
-        )
-        bottom = [a + b for a, b in zip(bottom, shares)]
-    axes.bar(
-        [str(year) for year in years], [1 - b for b in bottom],
-        bottom=bottom, label="all others", color="#d9d9d9",
-    )
-    axes.set_ylabel("Share of the year's arrivals")
-    axes.set_ylim(0, 1)
-    axes.legend(frameon=False, fontsize=7, ncol=3, loc="upper right")
-    axes.set_title("Nationalities making up most of the year's arrivals")
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f2_composition.png"))
-    plt.close(figure)
-
-
-def monthly_series():
-    """Small multiples of the monthly series for the parsed years.
-
-    Washington and the national total differ by an order of magnitude, so the
-    national line sits on its own axis instead of hiding the state series.
+def setup() -> None:
     """
-    frame = pd.read_csv(os.path.join(OUTPUTS, "wa_monthly.csv"))
-    years = sorted(frame["fiscal_year"].unique())
-    figure, panels = plt.subplots(
-        len(years), 1, figsize=(6.4, 1.7 * len(years)), sharex=True
-    )
-    for panel, year in zip(panels, years):
-        block = frame[frame["fiscal_year"] == year].sort_values("month")
-        panel.bar(
-            block["month"], block["washington"], width=0.7,
-            color=COLORS[0], label="Washington (left)",
-        )
-        twin = panel.twinx()
-        twin.plot(
-            block["month"], block["national"], marker="o", ms=3,
-            lw=1.2, color=COLORS[3], label="All states (right)",
-        )
-        twin.grid(False)
-        twin.set_ylabel("all states", fontsize=6, color=COLORS[3])
-        twin.tick_params(labelsize=6, colors=COLORS[3])
-        panel.set_ylabel(str(year), rotation=0, labelpad=22)
-        panel.set_xticks(range(1, 13))
-        panel.set_xticklabels(MONTH_LABELS, fontsize=7)
-        panel.tick_params(labelsize=7)
-        if year == years[0]:
-            panel.legend(frameon=False, fontsize=6, loc="upper left")
-    panels[-1].set_xlabel("Month of the fiscal year")
-    figure.suptitle(
-        "Monthly arrivals: Washington bars, national line", y=0.995
-    )
+    Creates the figures folder and applies one quiet style to every
+    figure: light grid behind the data, no top or right frame.
+    """
+    os.makedirs(FIGURES, exist_ok=True)
+    plt.rcParams.update({
+        "figure.dpi": 200, "font.size": 8.5, "axes.titlesize": 9.5,
+        "axes.titleweight": "bold", "axes.titlelocation": "left",
+        "axes.spines.top": False, "axes.spines.right": False,
+        "axes.edgecolor": INK, "axes.labelcolor": INK,
+        "xtick.color": INK, "ytick.color": INK, "axes.grid": True,
+        "axes.grid.axis": "y", "grid.color": GRID, "axes.axisbelow": True,
+        "legend.frameon": False, "lines.linewidth": 1.4})
+
+
+def read(name: str) -> pd.DataFrame:
+    """
+    Returns the table outputs/name.csv.
+    """
+    return pd.read_csv(os.path.join(OUTPUTS, name + ".csv"))
+
+
+def save(figure: plt.Figure, name: str) -> None:
+    """
+    Saves a figure as figures/name.png and closes it.
+    """
     figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f3_monthly.png"))
+    figure.savefig(os.path.join(FIGURES, name + ".png"))
     plt.close(figure)
 
 
-def siv_share():
-    """Share of recorded arrivals that appears only in the SIV report."""
-    frame = pd.read_csv(os.path.join(OUTPUTS, "two_ledgers.csv"))
-    figure, axes = plt.subplots(figsize=(6.4, 2.3))
-    for colour, name in zip(COLORS, ("Afghanistan", "Iraq")):
-        block = frame[frame["nationality"] == name].sort_values(
-            "fiscal_year"
-        )
-        axes.plot(
-            block["fiscal_year"], block["siv_share"], marker="o", ms=4,
-            lw=1.4, color=colour, label=name,
-        )
-    years = sorted(frame["fiscal_year"].unique())
-    axes.set_xticks(years)
+def mark_events(axes: plt.Axes, label: bool) -> None:
+    """
+    Draws a dashed vertical line at each policy event, numbered 1-5 above
+    the plot when label is True (the caption names the events; some are
+    only months apart, so names would collide).
+    """
+    for number, (month, _) in enumerate(analysis.POLICY_EVENTS, start=1):
+        date = pd.Timestamp(month + "-01")
+        axes.axvline(date, color=INK, linestyle=(0, (3, 3)), linewidth=0.7)
+        if label:
+            axes.annotate(str(number), (date, 1.0),
+                          xycoords=("data", "axes fraction"),
+                          xytext=(0, 2), textcoords="offset points",
+                          fontsize=7, color=INK, ha="center", va="bottom")
+
+
+def monthly_series() -> None:
+    """
+    Two aligned panels: national monthly arrivals FY2015-FY2026 from the
+    region report, and Washington's monthly arrivals, which exist only
+    from FY2021; the FY2015-FY2020 span is shaded as annual-only.
+    """
+    nation = read("national_monthly")
+    state = read("wa_monthly")
+    for table in (nation, state):
+        table["date"] = pd.to_datetime(table["date"])
+    figure, (top, bottom) = plt.subplots(2, 1, figsize=(WIDTH, 4.4),
+                                         sharex=True)
+    top.plot(nation["date"], nation["arrivals"], color=SERIES[0])
+    top.set_title("National refugee arrivals per month, FY2015-FY2026",
+                  pad=14)
+    top.set_ylabel("Arrivals")
+    mark_events(top, True)
+    bottom.plot(state["date"], state["arrivals"], color=SERIES[1])
+    start = analysis.calendar_date(analysis.FIRST_YEAR, 1)
+    end = analysis.calendar_date(analysis.MONTHLY_YEARS[0], 1)
+    bottom.axvspan(start, end, color=SHADE, zorder=0)
+    bottom.text(start + (end - start) / 2, 0.5, "FY2015-FY2020: state "
+                "report gives annual totals only", transform=bottom.
+                get_xaxis_transform(), ha="center", va="center",
+                color=INK, fontsize=7.5)
+    bottom.set_title("Washington refugee arrivals per month, FY2021-FY2026")
+    bottom.set_ylabel("Arrivals")
+    mark_events(bottom, False)
+    save(figure, "f1_monthly")
+
+
+def composition() -> None:
+    """
+    Stacked bars of each fiscal year's nationality mix in Washington: the
+    seven largest nationalities over all years, the rest as 'Other', with
+    the year's total above each bar.
+    """
+    arrivals = analysis.load_arrivals()
+    annual = analysis.state_annual(arrivals)
+    shares = analysis.share_table(annual)
+    leaders = annual.groupby("nationality")["count"].sum().sort_values(
+        ascending=False).head(TOP_SERIES).index.tolist()
+    years = list(shares.columns)
+    totals = annual.groupby("fiscal_year")["count"].sum()
+    figure, axes = plt.subplots(figsize=(WIDTH, 3.0))
+    bottom = pd.Series(0.0, index=years)
+    labels = [str(year) for year in years]
+    rows = [(name, shares.loc[name], colour)
+            for name, colour in zip(leaders, SERIES)]
+    rows.append(("Other", shares.drop(index=leaders).sum(), OTHER))
+    for name, values, colour in rows:
+        axes.bar(labels, values, bottom=bottom, color=colour, width=0.72,
+                 edgecolor="white", linewidth=0.8, label=name)
+        bottom = bottom + values
+    others = shares.drop(index=leaders)
+    for label, year in zip(labels, years):
+        axes.text(label, 1.02, "{:,}".format(int(totals[year])),
+                  ha="center", va="bottom", fontsize=6.8, color=INK)
+        # Name a single nationality that makes up most of a year's 'Other'.
+        biggest = others[year].idxmax()
+        if others[year].max() > 0.5:
+            axes.text(label, 1 - others[year].max() / 2, biggest,
+                      rotation=90, ha="center", va="center", fontsize=7,
+                      color="white")
+    axes.set_ylim(0, 1.1)
     axes.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     axes.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
-    axes.set_xlabel("Fiscal year")
-    axes.set_ylabel("SIV share of recorded arrivals")
-    axes.set_ylim(0, 1.05)
-    axes.legend(frameon=False, fontsize=7, loc="center right")
-    axes.set_title("How much of the recorded count the refugee report misses")
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f8_siv_share.png"))
+    axes.set_ylabel("Share of the year's arrivals")
+    axes.set_title("Washington refugee arrivals by nationality (number "
+                   "above bar = year total)")
+    axes.legend(ncol=1, fontsize=7, loc="center left",
+                bbox_to_anchor=(1.0, 0.5))
+    save(figure, "f2_composition")
+
+
+def ledgers() -> None:
+    """
+    Two panels, Afghanistan and Iraq: Washington arrivals per fiscal year
+    stacked by the report that records them (refugee or SIV).
+    """
+    shares = read("rq4_siv_share")
+    figure, panels = plt.subplots(1, 2, figsize=(WIDTH, 2.6))
+    for axes, nationality in zip(panels, analysis.LEDGER_NATIONALITIES):
+        block = shares[shares["nationality"] == nationality]
+        labels = [str(year)[2:] for year in block["fiscal_year"]]
+        axes.bar(labels, block["refugee"], color=SERIES[0], width=0.72,
+                 label="Refugee report")
+        axes.bar(labels, block["siv"], bottom=block["refugee"],
+                 color=SERIES[1], width=0.72, edgecolor="white",
+                 linewidth=0.8, label="SIV report")
+        axes.set_title(nationality)
+        axes.set_xlabel("Fiscal year (20xx)")
+    panels[0].set_ylabel("Recorded arrivals")
+    panels[0].legend(loc="upper left", fontsize=7)
+    figure.suptitle("Afghan and Iraqi arrivals to Washington by the report "
+                    "that records them", x=0.01, ha="left",
+                    fontsize=9.5, fontweight="bold")
+    save(figure, "f3_ledgers")
+
+
+def siv_share() -> None:
+    """
+    The share of recorded Afghan and Iraqi arrivals in Washington that
+    appears only in the SIV report, per fiscal year, with the comparison
+    periods shaded.
+    """
+    shares = read("rq4_siv_share")
+    figure, axes = plt.subplots(figsize=(WIDTH, 2.5))
+    for (name, years), shade in zip(analysis.PERIODS.items(),
+                                    [SHADE, "#e4e2dc", SHADE]):
+        axes.axvspan(min(years) - 0.4, max(years) + 0.4, color=shade,
+                     zorder=0)
+        axes.text((min(years) + max(years)) / 2, 1.04, name, ha="center",
+                  fontsize=7, color=INK)
+    for nationality, colour in zip(analysis.LEDGER_NATIONALITIES, SERIES):
+        block = shares[shares["nationality"] == nationality]
+        axes.plot(block["fiscal_year"], block["siv_share"], color=colour,
+                  marker="o", markersize=4, label=nationality)
+        last = block.iloc[-1]
+        axes.annotate(nationality, (last["fiscal_year"], last["siv_share"]),
+                      xytext=(6, 0), textcoords="offset points",
+                      va="center", fontsize=7.5, color=INK)
+    axes.set_ylim(0, 1.12)
+    axes.set_xlim(2014.5, 2026.2)
+    axes.set_xticks(analysis.LEDGER_YEARS)
+    axes.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+    axes.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
+    axes.set_ylabel("Share in SIV report only")
+    axes.set_title("Share of recorded arrivals to Washington found only in "
+                   "the SIV report", pad=12)
+    axes.legend(loc="center", bbox_to_anchor=(0.8, 0.5), fontsize=7)
+    save(figure, "f4_siv_share")
+
+
+def language_tiers() -> None:
+    """
+    Two panels, state table (B16001) and county table (C16001): the share
+    of each year's Washington arrivals by how the ACS shows their main
+    language (own category, shared, residual, or not in the crosswalk).
+    """
+    figure, panels = plt.subplots(1, 2, figsize=(WIDTH, 2.8), sharey=True)
+    for axes, (name, title) in zip(panels, [
+            ("rq3_visibility_state", "State table B16001 (42 groups)"),
+            ("rq3_visibility_county", "County table C16001 (12 groups)")]):
+        table = read(name)
+        labels = [str(year)[2:] for year in table["fiscal_year"]]
+        bottom = pd.Series(0.0, index=table.index)
+        for tier, colour in TIERS.items():
+            values = table[tier] if tier in table.columns else 0 * bottom
+            axes.bar(labels, values, bottom=bottom, color=colour,
+                     width=0.75, edgecolor="white", linewidth=0.6,
+                     label=tier)
+            bottom = bottom + values
+        axes.set_title(title)
+        axes.set_xlabel("Fiscal year (20xx)")
+        axes.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+        axes.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
+    panels[0].set_ylabel("Share of arrivals (main language)")
+    handles, names = panels[0].get_legend_handles_labels()
+    figure.legend(handles, names, ncol=4, loc="lower center", fontsize=7,
+                  bbox_to_anchor=(0.5, -0.01))
+    figure.tight_layout(rect=(0, 0.07, 1, 1))
+    figure.savefig(os.path.join(FIGURES, "f5_tiers.png"))
     plt.close(figure)
 
 
-def language_tiers():
-    """Share of arrivals by how the ACS names their language."""
-    frame = pd.read_csv(os.path.join(OUTPUTS, "language_tiers.csv"))
-    frame = frame.set_index("fiscal_year")
-    order = [c for c in ("own", "shared", "residual",
-                         "not in crosswalk") if c in frame.columns]
-    figure, axes = plt.subplots(figsize=(6.4, 2.8))
-    bottom = [0.0] * len(frame)
-    for colour, name in zip(COLORS, order):
-        axes.bar(
-            [str(year) for year in frame.index], frame[name],
-            bottom=bottom, label=name, color=colour,
-        )
-        bottom = [a + b for a, b in zip(bottom, frame[name])]
-    axes.set_ylabel("Share of arrivals")
-    axes.set_ylim(0, 1)
-    axes.legend(
-        frameon=False, fontsize=6.5, ncol=4, loc="lower center",
-        bbox_to_anchor=(0.5, 1.0), handlelength=1.2, columnspacing=1.0,
-    )
-    axes.set_title(
-        "Arrivals by how the Census language table names them", pad=14
-    )
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f5_language.png"))
-    plt.close(figure)
+def counties() -> None:
+    """
+    Two panels of horizontal bars: the ten Washington counties with the
+    most speakers in the C16001 categories that absorb the missed
+    languages, each estimate with its 90% margin of error.
+    """
+    table = read("rq3_counties")
+    figure, panels = plt.subplots(1, 2, figsize=(WIDTH, 3.0))
+    for axes, category, colour in zip(
+            panels, ["Other and unspecified languages",
+                     "Other Asian and Pacific Island languages"], SERIES):
+        block = table[table["category"] == category].iloc[::-1]
+        axes.barh(block["county"], block["estimate"], xerr=block["margin"],
+                  color=colour, height=0.65,
+                  error_kw={"ecolor": INK, "elinewidth": 0.8, "capsize": 2})
+        title = category.replace(" and Pacific", "\nand Pacific")
+        axes.set_title(title.replace(" and unspecified",
+                                     "\nand unspecified"), fontsize=8.5)
+        axes.set_xlabel("Speakers aged 5+ (estimate ± MOE)")
+        axes.xaxis.set_major_formatter(
+            matplotlib.ticker.StrMethodFormatter("{x:,.0f}"))
+        axes.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
+        axes.grid(axis="x", color=GRID)
+        axes.grid(axis="y", visible=False)
+    save(figure, "f6_counties")
 
 
-def counties():
-    """Counties where the absorbing language category is largest."""
-    frame = pd.read_csv(os.path.join(OUTPUTS, "county_residual.csv"))
-    frame = frame.iloc[::-1]
-    figure, axes = plt.subplots(figsize=(6.4, 2.8))
-    axes.barh(
-        frame["county"].str.replace(" County, Washington", ""),
-        frame["estimate"], xerr=frame["margin"], color=COLORS[1],
-        error_kw={"ecolor": "#333333", "capsize": 2, "lw": 0.8},
-    )
-    axes.set_xlabel("Population 5+, estimate +/- margin of error")
-    axes.set_title('"Other and unspecified languages", by county')
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f6_counties.png"))
-    plt.close(figure)
-
-
-def ledgers():
-    """Afghan and Iraqi arrivals in each report."""
-    frame = pd.read_csv(os.path.join(OUTPUTS, "two_ledgers.csv"))
-    afghan = frame[frame["nationality"] == "Afghanistan"]
-    iraq = frame[frame["nationality"] == "Iraq"]
-    figure, panels = plt.subplots(1, 2, figsize=(6.4, 2.6), sharey=False)
-    for panel, block, title in zip(
-        panels, (afghan, iraq), ("Afghanistan", "Iraq")
-    ):
-        positions = range(len(block))
-        panel.bar(
-            [p - 0.2 for p in positions], block["refugee"], width=0.4,
-            label="Refugee report", color=COLORS[0],
-        )
-        panel.bar(
-            [p + 0.2 for p in positions], block["siv"], width=0.4,
-            label="SIV report", color=COLORS[3],
-        )
-        panel.set_xticks(list(positions))
-        panel.set_xticklabels(block["fiscal_year"].astype(int), fontsize=7)
-        panel.set_title(title, fontsize=9)
-        panel.legend(frameon=False, fontsize=6)
-    panels[0].set_ylabel("Arrivals in Washington")
-    figure.suptitle("Two reports, one nationality", y=1.0, fontsize=10)
-    figure.tight_layout()
-    figure.savefig(os.path.join(FIGURES, "f7_ledgers.png"))
-    plt.close(figure)
+def reconciliation() -> None:
+    """
+    Parsed national monthly totals (summed over every state row of each
+    arrivals report) against the totals printed in the separate region
+    report, for every month that both give; points on the diagonal agree
+    exactly.
+    """
+    arrivals = analysis.load_arrivals()
+    region = analysis.load_region()
+    parsed = arrivals[(arrivals["source"] == "refugee") &
+                      (arrivals["month"] <= 12)].groupby(
+        ["fiscal_year", "month"])["count"].sum().rename("parsed")
+    printed = region[(region["region"] == "Total") &
+                     (region["month"] <= 12)].set_index(
+        ["fiscal_year", "month"])["count"].rename("printed")
+    table = pd.concat([parsed, printed], axis=1, join="inner").reset_index()
+    figure, axes = plt.subplots(figsize=(3.4, 3.0))
+    limit = table[["parsed", "printed"]].max().max() * 1.05
+    axes.plot([0, limit], [0, limit], color=GRID, linewidth=1.2, zorder=0)
+    axes.scatter(table["printed"], table["parsed"], s=16, color=SERIES[0],
+                 edgecolor="white", linewidth=0.5)
+    axes.set_xlabel("Printed in region report")
+    axes.set_ylabel("Parsed from state report")
+    axes.set_title("Monthly national totals\nFY{}-FY{}, {} months".format(
+        table["fiscal_year"].min(), table["fiscal_year"].max(),
+        len(table)), fontsize=8.5)
+    axes.grid(axis="x", color=GRID)
+    save(figure, "f7_reconciliation")
 
 
 def main():
-    """Render every figure."""
     setup()
-    annual_arrivals()
-    composition()
     monthly_series()
-    language_tiers()
-    counties()
+    composition()
     ledgers()
     siv_share()
-    print("figures written to", FIGURES)
+    language_tiers()
+    counties()
+    reconciliation()
 
 
 if __name__ == "__main__":

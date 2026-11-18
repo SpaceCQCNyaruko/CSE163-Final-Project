@@ -1,5 +1,12 @@
 pandas
-pdfplumber
+numpy
 matplotlib
+pdfplumber
+PyMuPDF
+opencv-python
+rapidocr-onnxruntime
+ruptures
 xlrd
 openpyxl
+python-docx
+flake8
